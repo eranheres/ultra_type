@@ -8,14 +8,15 @@ class Controller:
 
     def run(self):
         while True:
-            print("Menu:\n1. Practice\n2. Show Stats\n3. Quit")
-            print("\nDescriptions:\n1. Practice: Practice typing a word in a chosen language.\n2. Show Stats: Display your typing statistics.\n3. Quit: Exit the program.\n")
+            print("Menu:\n1. Practice\n2. Show Stats\n3. Exit")
+            print("\nDescriptions:\n1. Practice: Practice typing a word in a chosen language.\n2. Show Stats: Display your typing statistics.\n3. Exit: Exit the program. (Enter the option number)\n")
             action = self.view.get_user_input()
-            if action == 'quit':
+            action = int(action)
+            if action == 3:
                 break
-            elif action == 'practice':
+            elif action == 1:
                 self.practice()
-            elif action == 'show_stats':
+            elif action == 2:
                 self.show_stats()
 
     def practice(self):
