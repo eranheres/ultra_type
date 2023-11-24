@@ -46,4 +46,5 @@ sandbox:
   install:
     - poetry install
   check:
+    - poetry run pylint -E {file_path}
     - poetry run pytest
