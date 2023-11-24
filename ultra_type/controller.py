@@ -7,8 +7,10 @@ class Controller:
         self.view = view
 
     def run(self):
-        while True:
-            action = self.view.get_user_input()
+            while True:
+                print("Menu:\n1. practice\n2. show_stats\n3. quit")
+                print("\nDescriptions:\n1. Practice: This action allows you to practice typing.\n2. Show Stats: This action displays your typing statistics.\n3. Quit: This action exits the program.\n")
+                action = self.view.get_user_input()
             if action == 'quit':
                 break
             elif action == 'practice':
