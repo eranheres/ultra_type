@@ -8,13 +8,17 @@ class Controller:
 
     def run(self):
         while True:
+            print("Menu:\n1. Practice\n2. Show Stats\n3. Quit")
             action = self.view.get_user_input()
+            print("Practice: Improve your typing skills with a practice session.")
+            if action == 'practice':
+                self.practice()
+            print("Show Stats: Display your typing statistics.")
+            if action == 'show_stats':
+                self.show_stats()
+            print("Quit: Exit the program.")
             if action == 'quit':
                 break
-            elif action == 'practice':
-                self.practice()
-            elif action == 'show_stats':
-                self.show_stats()
 
     def practice(self):
         language = self.view.get_language_choice()
