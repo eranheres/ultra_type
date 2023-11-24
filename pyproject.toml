@@ -6,7 +6,7 @@ authors = ["eran.heres@gmail.com <eran.heres@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10.2"
 pytest = "^7.4.3"
 
 
