@@ -7,14 +7,22 @@ class Controller:
         self.view = view
 
     def run(self):
-        while True:
-            action = self.view.get_user_input()
-            if action == 'quit':
-                break
-            elif action == 'practice':
-                self.practice()
-            elif action == 'show_stats':
-                self.show_stats()
+            print("Welcome to Ultra Type! Here are your options:")
+            print("'quit': Exit the program")
+            print("'practice': Practice typing in the chosen language")
+            print("'show_stats': Display your typing statistics")
+            print("Please choose an action from the menu.")
+            while True:
+                action = self.view.get_user_input()
+                if action == 'quit':
+                    print("You have chosen to quit the program.")
+                    break
+                elif action == 'practice':
+                    print("You have chosen to practice.")
+                    self.practice()
+                elif action == 'show_stats':
+                    print("You have chosen to show your statistics.")
+                    self.show_stats()
 
     def practice(self):
         language = self.view.get_language_choice()
