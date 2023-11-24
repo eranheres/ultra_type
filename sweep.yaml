@@ -46,4 +46,4 @@ sandbox:
   install:
     - poetry install
   check:
-    - poetry pytest
+    - poetry run pytest
