@@ -39,11 +39,9 @@ class TestLanguageLoadWords(unittest.TestCase):
     def setUp(self):
         # Assuming the Language class can be instantiated without arguments
         # and the language attribute can be set post-instantiation.
-        self.english_language = Language()
-        self.english_language.language = 'English'
+        self.english_language = Language('English')
         
-        self.hebrew_language = Language()
-        self.hebrew_language.language = 'Hebrew'
+        self.hebrew_language = Language('Hebrew')
 
     
 
@@ -57,8 +55,7 @@ class TestLanguageLoadWords(unittest.TestCase):
         self.assertEqual(self.hebrew_language.load_words(), expected_words)
 
     def test_load_words_unsupported_language(self):
-        language = Language()
-        language.language = 'Spanish'  # Unsupported language
+        language = Language('Spanish')  # Unsupported language
         self.assertEqual(language.load_words(), [])  # Expect an empty list
 
 class TestLanguageGetWord(unittest.TestCase):
