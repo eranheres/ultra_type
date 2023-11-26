@@ -12,6 +12,4 @@ class View:
 
     def display_stats(self, stats: dict):
         print(stats)
-import curses
-    def display_stats(self, stats: dict):
-        print(stats)
+# No lines to replace
