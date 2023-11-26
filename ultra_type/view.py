@@ -1,4 +1,8 @@
+import curses
+
 class View:
+    def __init__(self):
+        self.stdscr = curses.initscr()
     def get_user_input(self):
         return self.stdscr.getstr().decode('utf-8')
 
@@ -8,8 +12,10 @@ class View:
         return self.stdscr.getstr().decode('utf-8')
 
     def display_word(self, word: str):
-        print(word)
+        self.stdscr.addstr(word)
+        self.stdscr.refresh()
 
     def display_stats(self, stats: dict):
-        print(stats)
+        self.stdscr.addstr(str(stats))
+        self.stdscr.refresh()
 # No lines to replace
