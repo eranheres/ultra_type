@@ -40,7 +40,8 @@ blocked_dirs: [resources, .github]
 #
 # docs:
 #   - PyGitHub: ["https://pygithub.readthedocs.io/en/latest/", "We use pygithub to interact with the GitHub API"]
-docs: []
+docs: 
+  - Curses: ["https://docs.python.org/3/library/curses.html#module-curses", "We use curses for the console application user interactions"]
 
 # Sandbox executes commands in a sandboxed environment to validate code changes after every edit to guarantee pristine code. For more details, see the [Sandbox](./sandbox) page.
 sandbox:
