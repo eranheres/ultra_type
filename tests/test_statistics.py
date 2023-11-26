@@ -20,7 +20,7 @@ class TestStatisticsUpdate(unittest.TestCase):
         self.assertEqual(self.statistics.total_count, 1)
         self.assertEqual(self.statistics.success_count, 0)
 
-def test_update_multiple_calls(self):
+    def test_update_multiple_calls(self):
         # Test the update method with multiple calls
         for _ in range(3):
             self.statistics.update(success=True)
