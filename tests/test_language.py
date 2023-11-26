@@ -32,7 +32,7 @@ class TestLanguageCheckWord(unittest.TestCase):
 
 # Additional tests can be added here if necessary
 
-def test_check_word_with_integer(self):
+    def test_check_word_with_integer(self):
         word = 123
         self.mock_words.__contains__.return_value = True
         self.assertTrue(self.language.check_word(word))
