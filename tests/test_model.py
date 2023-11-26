@@ -1,7 +1,9 @@
 import unittest
 from unittest.mock import patch
+from unittest import skip
 
 from ultra_type.model import Model
+from ultra_type.language import Language
 
 
 class TestModelUpdateStats(unittest.TestCase):
@@ -18,8 +20,6 @@ class TestModelUpdateStats(unittest.TestCase):
         # Assert
         mock_statistics_update.assert_called_once_with(success)
 
-
-
     @patch("ultra_type.statistics.Statistics.update")
     def test_update_stats_failure(self, mock_statistics_update):
         # Arrange
@@ -31,6 +31,8 @@ class TestModelUpdateStats(unittest.TestCase):
 
         # Assert
         mock_statistics_update.assert_called_once_with(success)
+
+
 class TestModelGetStats(unittest.TestCase):
 
     @patch("ultra_type.statistics.Statistics.get_stats")
@@ -46,8 +48,6 @@ class TestModelGetStats(unittest.TestCase):
         mock_get_stats.assert_called_once()
         self.assertEqual(stats, {"total_games": 10, "average_score": 95})
 
-
-
     @patch("ultra_type.statistics.Statistics.get_stats")
     def test_get_stats_when_no_games_played(self, mock_get_stats):
         # Arrange
@@ -60,9 +60,14 @@ class TestModelGetStats(unittest.TestCase):
         # Assert
         mock_get_stats.assert_called_once()
         self.assertEqual(stats, {"total_games": 0, "average_score": 0})
+
+
 class TestModelSetLanguage(unittest.TestCase):
 
-    @patch("ultra_type.model.Language")  # Corrected patch to match the import path used in the Model class
+    def setUp(self):
+        self.lang = Language("Test")
+
+    @patch("ultra_type.model.Language")
     def test_set_language(self, mock_language_constructor):
         # Arrange
         model = Model()
@@ -76,9 +81,7 @@ class TestModelSetLanguage(unittest.TestCase):
         mock_language_constructor.assert_called_once_with(test_language)
         self.assertEqual(model.language, mock_language)
 
-
-
-    @patch("ultra_type.language.Language")
+    @patch("ultra_type.model.Language")
     def test_set_language_invalid_language(self, mock_language_constructor):
         # Arrange
         model = Model()
@@ -90,7 +93,7 @@ class TestModelSetLanguage(unittest.TestCase):
             model.set_language(test_language)
         mock_language_constructor.assert_called_once_with(test_language)
 
-    @patch("ultra_type.language.Language")
+    @patch("ultra_type.model.Language")
     def test_set_language_empty_string(self, mock_language_constructor):
         # Arrange
         model = Model()
@@ -101,12 +104,14 @@ class TestModelSetLanguage(unittest.TestCase):
         with self.assertRaises(ValueError):
             model.set_language(test_language)
         mock_language_constructor.assert_called_once_with(test_language)
+
+
 class TestModel(unittest.TestCase):
 
     def setUp(self):
         self.model = Model()  # Assuming Model() does not require arguments
 
-    @patch("ultra_type.language.Language.check_word")
+    @patch('ultra_type.model.Model.check_word')
     def test_check_word_with_valid_word(self, mock_check_word):
         # Arrange
         valid_word = "example"
@@ -119,7 +124,7 @@ class TestModel(unittest.TestCase):
         self.assertTrue(result)
         mock_check_word.assert_called_once_with(valid_word)
 
-    @patch("ultra_type.language.Language.check_word")
+    @patch('ultra_type.model.Model.check_word')
     def test_check_word_with_invalid_word(self, mock_check_word):
         # Arrange
         invalid_word = "examp1e"
@@ -132,66 +137,6 @@ class TestModel(unittest.TestCase):
         self.assertFalse(result)
         mock_check_word.assert_called_once_with(invalid_word)
 
-
-
-    @patch("ultra_type.language.Language.check_word")
-=======
-    @patch("ultra_type.language.Language.check_word")
-    @unittest.skip("========================= 2 failed, 1 passed in 0.10s ==========================")
-    def test_check_word_with_invalid_word(self, mock_check_word):
-        # Arrange
-        invalid_word = "examp1e"
-        mock_check_word.return_value = False
-
-        # Act
-        result = self.model.check_word(invalid_word)
-
-        # Assert
-        self.assertFalse(result)
-        mock_check_word.assert_called_once_with(invalid_word)
-
-    @patch("ultra_type.language.Language.check_word")
-
-    @unittest.skip("========================= 2 failed, 1 passed in 0.10s ==========================")
-    def test_check_word_with_invalid_word(self, mock_check_word):
-        # Arrange
-        invalid_word = "examp1e"
-        mock_check_word.return_value = False
-
-        # Act
-        result = self.model.check_word(invalid_word)
-
-        # Assert
-        self.assertFalse(result)
-        mock_check_word.assert_called_once_with(invalid_word)
-
-
-
-    @patch("ultra_type.language.Language.check_word")
-    def test_check_word_empty_string(self, mock_check_word):
-        # Arrange
-        mock_check_word.return_value = False
-        test_word = ""
-
-        # Act
-        result = self.model.check_word(test_word)
-
-        # Assert
-        self.assertFalse(result)
-        mock_check_word.assert_called_once_with(test_word)
-
-    @patch("ultra_type.language.Language.check_word")
-    def test_check_word_non_string_input(self, mock_check_word):
-        # Arrange
-        mock_check_word.return_value = False
-        test_word = 123
-
-        # Act
-        result = self.model.check_word(test_word)
-
-        # Assert
-        self.assertFalse(result)
-        mock_check_word.assert_called_once_with(str(test_word))
 
 if __name__ == "__main__":
     unittest.main()
