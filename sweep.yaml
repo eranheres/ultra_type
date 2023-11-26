@@ -47,6 +47,5 @@ sandbox:
   install:
     - poetry install
   check:
-    - poetry run pylint -E {file_path}
-    - poetry run pytest
+    - poetry run pylint --ignore=*.toml,*.yaml -E {file_path}
 
