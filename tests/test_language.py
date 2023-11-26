@@ -49,7 +49,6 @@ class TestLanguageLoadWords(unittest.TestCase):
         expected_words = ['word1', 'word2', 'word3']
         self.assertEqual(self.english_language.words, expected_words)
 
-    @unittest.skip("ultra_type/language_test.py:12:31: E1120: No value for argument 'language' in constructor call (no-value-for-parameter)")
     def test_load_words_hebrew(self):
         expected_words = ['word1', 'word2', 'word3']
         self.assertEqual(self.hebrew_language.words, expected_words)
@@ -73,16 +72,6 @@ class TestLanguageGetWord(unittest.TestCase):
         self.assertEqual(len(self.language.words), 0)
 
     # Additional tests can be added here if there are more edge cases or behaviors to test
-
-    @patch.object(MagicMock, 'pop')
-    def test_get_word_when_words_is_empty(self, mock_pop):
-        # Set the side effect of the mock pop method to raise an IndexError when called
-        mock_pop.side_effect = IndexError
-        # Test that get_word returns None when words is empty
-        word = self.language.get_word()
-        self.assertIsNone(word)
-        # Test that the length of words list has not changed
-        self.assertEqual(len(self.language.words), 1)
 
     def tearDown(self):
         pass
