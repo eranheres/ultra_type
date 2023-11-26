@@ -46,7 +46,7 @@ class TestStatisticsGetStats(unittest.TestCase):
         actual_stats = self.statistics.get_stats()
         self.assertEqual(expected_stats, actual_stats)
 
-def test_get_stats_with_half_success_rate(self):
+    def test_get_stats_with_half_success_rate(self):
         self.statistics.success_count = 50
         self.statistics.total_count = 100
         expected_stats = {'success_rate': 0.5}
@@ -66,6 +66,5 @@ def test_get_stats_with_half_success_rate(self):
         expected_stats = {'success_rate': 0}
         actual_stats = self.statistics.get_stats()
         self.assertEqual(expected_stats, actual_stats)
-
 if __name__ == '__main__':
     unittest.main()
