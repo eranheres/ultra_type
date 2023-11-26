@@ -1,10 +1,11 @@
 class View:
     def get_user_input(self):
-        return input()
+        return self.stdscr.getstr().decode('utf-8')
 
     def get_language_choice(self):
-        print("Choose a language: English or Hebrew")
-        return input()
+        self.stdscr.addstr("Choose a language: English or Hebrew")
+        self.stdscr.refresh()
+        return self.stdscr.getstr().decode('utf-8')
 
     def display_word(self, word: str):
         print(word)
