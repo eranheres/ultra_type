@@ -47,7 +47,7 @@ class TestLanguageLoadWords(unittest.TestCase):
 
     
 
-def test_load_words_english(self):
+    def test_load_words_english(self):
         expected_words = ['word1', 'word2', 'word3']
         self.assertEqual(self.english_language.load_words(), expected_words)
 
