@@ -7,9 +7,10 @@ class View:
         return self.stdscr.getstr().decode('utf-8')
 
     def get_language_choice(self):
-        self.stdscr.addstr("Choose a language: English or Hebrew")
+        self.stdscr.addstr("Choose a language: 1. English 2. Hebrew")
         self.stdscr.refresh()
-        return self.stdscr.getstr().decode('utf-8')
+        choice = int(self.stdscr.getstr().decode('utf-8'))
+        return 'English' if choice == 1 else 'Hebrew' if choice == 2 else None
 
     def display_word(self, word: str):
         self.stdscr.clear()
