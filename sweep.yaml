@@ -48,4 +48,5 @@ sandbox:
     - poetry install
   check:
     - poetry run pylint -E **/*.py
+    - poerty run pytest
 
