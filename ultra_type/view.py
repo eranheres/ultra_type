@@ -12,10 +12,12 @@ class View:
         return self.stdscr.getstr().decode('utf-8')
 
     def display_word(self, word: str):
+        self.stdscr.clear()
         self.stdscr.addstr(word)
         self.stdscr.refresh()
 
     def display_stats(self, stats: dict):
+        self.stdscr.clear()
         self.stdscr.addstr(str(stats))
         self.stdscr.refresh()
 # No lines to replace
