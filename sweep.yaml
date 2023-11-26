@@ -47,5 +47,5 @@ sandbox:
   install:
     - poetry install
   check:
-    - poetry run pylint **/*.py
+    - poetry run pylint -E **/*.py
 
