@@ -1,3 +1,5 @@
+from ultra_type.keystroke import KeyStroke
+
 class View:
     def get_user_input(self):
         return input()
@@ -9,5 +11,7 @@ class View:
     def display_word(self, word: str):
         print(word)
 
+    def display_stats(self, stats: dict):
+        print(stats)
     def display_stats(self, stats: dict):
         print(stats)
