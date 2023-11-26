@@ -20,7 +20,8 @@ class Controller:
                 self.show_stats()
 
     def practice(self):
-        language = self.view.get_language_choice()
+        language_choice = self.view.get_language_choice()
+        language = 'English' if language_choice == 1 else 'Hebrew' if language_choice == 2 else None
         self.model.set_language(language)
         word = self.model.get_word()
         self.view.display_word(word)
