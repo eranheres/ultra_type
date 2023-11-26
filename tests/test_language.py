@@ -12,7 +12,7 @@ class TestLanguageCheckWord(unittest.TestCase):
         self.language = Language('English')
         # Assuming that 'words' is a public attribute that can be set.
         # If 'words' is populated in some other way, that would need to be mocked or set up here.
-        self.language.words = {'hello', 'world'}
+        self.language.words = ['hello', 'world']
 
     def test_check_word_exists(self):
         # Test that check_word returns True for a word that exists in the language's words
@@ -47,12 +47,12 @@ class TestLanguageLoadWords(unittest.TestCase):
 
     def test_load_words_english(self):
         expected_words = ['word1', 'word2', 'word3']
-        self.assertEqual(self.english_language.load_words(), expected_words)
+        self.assertEqual(self.english_language.words, expected_words)
 
     @unittest.skip("ultra_type/language_test.py:12:31: E1120: No value for argument 'language' in constructor call (no-value-for-parameter)")
     def test_load_words_hebrew(self):
         expected_words = ['word1', 'word2', 'word3']
-        self.assertEqual(self.hebrew_language.load_words(), expected_words)
+        self.assertEqual(self.hebrew_language.words, expected_words)
 
     def test_load_words_unsupported_language(self):
         language = Language('Spanish')  # Unsupported language
@@ -63,9 +63,7 @@ class TestLanguageGetWord(unittest.TestCase):
     def setUp(self):
         # Assuming 'language' is a string parameter required by the Language constructor
         self.language = Language('English')
-        self.mock_words = MagicMock()
-        self.mock_words.pop.return_value = "mocked_word"
-        self.language.words = self.mock_words
+        self.language.words = ['mocked_word']
 
     def test_get_word(self):
         # Test that get_word returns the correct word
