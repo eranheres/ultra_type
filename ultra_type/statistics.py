@@ -15,6 +15,5 @@ class Statistics:
         return {
             'success_rate': self.success_count / self.total_count if self.total_count > 0 else 0
         }
-        }
     def get_keystrokes(self):
         return self.keystrokes
