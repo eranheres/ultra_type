@@ -8,8 +8,8 @@ class Controller:
 
     def run(self):
         while True:
-            print("Menu:\n1. Practice\n2. Show Stats\n3. Exit")
-            print("\nDescriptions:\n1. Practice: Practice typing a word in a chosen language.\n2. Show Stats: Display your typing statistics.\n3. Exit: Exit the program. (Enter the option number)\n")
+            self.view.display_word("Menu:\n1. Practice\n2. Show Stats\n3. Exit")
+            self.view.display_word("\nDescriptions:\n1. Practice: Practice typing a word in a chosen language.\n2. Show Stats: Display your typing statistics.\n3. Exit: Exit the program. (Enter the option number)\n")
             action = self.view.get_user_input()
             action = int(action)
             if action == 3:
