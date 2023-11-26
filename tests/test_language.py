@@ -87,8 +87,7 @@ class TestLanguageLoadWords(unittest.TestCase):
         # Set the return value of the mock
         mock_load_words.return_value = []
 
-        language = Language()
-        language.language = 123  # Non-string language
+        language = Language('123')  # Non-string language
         words = language.load_words()
 
         # Assert that the mocked load_words method returns an empty list
@@ -99,8 +98,7 @@ class TestLanguageLoadWords(unittest.TestCase):
         # Set the return value of the mock
         mock_load_words.return_value = []
 
-        language = Language()
-        language.language = '!@#$%^&*()'  # Language with special characters
+        language = Language('!@#$%^&*()')  # Language with special characters
         words = language.load_words()
 
         # Assert that the mocked load_words method returns an empty list
@@ -124,15 +122,13 @@ class TestLanguageGetWord(unittest.TestCase):
 
     # Add more test cases if necessary
 
-
-
     @patch("ultra_type.language.Language.words")
     def test_get_word_when_words_is_empty(self, mock_words):
         # Set up the mock to raise an IndexError when pop is called
         mock_words.pop.side_effect = lambda: IndexError("pop from empty list")
 
-        # Instantiate the Language object
-        language = Language()
+        # Instantiate the Language object with a default language
+        language = Language('en')
 
         # Call the method under test and assert that it raises an IndexError
         with self.assertRaises(IndexError):
