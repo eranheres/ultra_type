@@ -1,5 +1,5 @@
 import unittest
-
+from ultra_type.keystroke import KeyStroke
 from ultra_type.statistics import Statistics
 
 
@@ -41,6 +41,7 @@ class TestStatisticsGetStats(unittest.TestCase):
         self.assertEqual(expected_stats, actual_stats)
 
     def test_get_stats_with_zero_total(self):
+        self.statistics.success_count = 0
         self.statistics.total_count = 0
         expected_stats = {'success_rate': 0}
         actual_stats = self.statistics.get_stats()
@@ -68,3 +69,14 @@ class TestStatisticsGetStats(unittest.TestCase):
         self.assertEqual(expected_stats, actual_stats)
 if __name__ == '__main__':
     unittest.main()
+class TestStatisticsGetKeystrokes(unittest.TestCase):
+
+    def setUp(self):
+        self.statistics = Statistics()
+        self.keystrokes = [KeyStroke('a'), KeyStroke('b'), KeyStroke('c')]
+        self.statistics.update(self.keystrokes, success=True)
+
+    def test_get_keystrokes(self):
+        expected_keystrokes = self.keystrokes
+        actual_keystrokes = self.statistics.get_keystrokes()
+        self.assertEqual(expected_keystrokes, actual_keystrokes)
