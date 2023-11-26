@@ -69,8 +69,8 @@ class TestLanguageGetWord(unittest.TestCase):
         # Test that get_word returns the correct word
         word = self.language.get_word()
         self.assertEqual(word, "mocked_word")
-        # Test that pop was called once
-        self.language.words.pop.assert_called_once()
+        # Test that the length of words list has decreased by 1
+        self.assertEqual(len(self.language.words), 0)
 
     # Additional tests can be added here if there are more edge cases or behaviors to test
 
@@ -81,8 +81,8 @@ class TestLanguageGetWord(unittest.TestCase):
         # Test that get_word returns None when words is empty
         word = self.language.get_word()
         self.assertIsNone(word)
-        # Test that pop was called once
-        self.language.words.pop.assert_called_once()
+        # Test that the length of words list has not changed
+        self.assertEqual(len(self.language.words), 1)
 
     def tearDown(self):
         pass
