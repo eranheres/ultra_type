@@ -70,7 +70,7 @@ class TestLanguageGetWord(unittest.TestCase):
         word = self.language.get_word()
         self.assertEqual(word, "mocked_word")
         # Test that pop was called once
-        self.mock_words.pop.assert_called_once()
+        self.language.words.pop.assert_called_once()
 
     # Additional tests can be added here if there are more edge cases or behaviors to test
 
@@ -82,7 +82,7 @@ class TestLanguageGetWord(unittest.TestCase):
         word = self.language.get_word()
         self.assertIsNone(word)
         # Test that pop was called once
-        self.mock_words.pop.assert_called_once()
+        self.language.words.pop.assert_called_once()
 
     def tearDown(self):
         pass
