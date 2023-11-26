@@ -41,11 +41,6 @@ class TestStatisticsGetStats(unittest.TestCase):
         self.assertEqual(expected_stats, actual_stats)
 
     def test_get_stats_with_zero_total(self):
-        actual_stats = self.statistics.get_stats()
-        self.assertEqual(expected_stats, actual_stats)
-
-    def test_get_stats_with_zero_total(self):
-        self.statistics.total_count = 0
         expected_stats = {'success_rate': 0}
         actual_stats = self.statistics.get_stats()
         self.assertEqual(expected_stats, actual_stats)
