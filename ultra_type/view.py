@@ -22,3 +22,4 @@ class View:
         self.stdscr.addstr(str(stats))
         self.stdscr.refresh()
 # No lines to replace
+from tabulate import tabulate
