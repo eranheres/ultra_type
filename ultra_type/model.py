@@ -7,6 +7,7 @@ class Model:
         self.database = Database()
         self.language = None
         self.statistics = Statistics()
+        self.user = "default"
 
     def set_language(self, language: str):
         self.language = Language(language)
@@ -22,3 +23,5 @@ class Model:
 
     def get_stats(self):
         return self.statistics.get_stats()
+    def set_user(self, user: str):
+        self.user = user
