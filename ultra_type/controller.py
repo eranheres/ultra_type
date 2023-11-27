@@ -17,7 +17,7 @@ class Controller:
             elif action == 1:
                 self.practice()
             elif action == 2:
-                self.show_stats()
+                pass
 
     def practice(self):
         """
@@ -40,17 +40,17 @@ def run(self):
         self.view.display_word("Menu:\n1. Practice\n2. Show Stats\n3. Exit")
         self.view.display_word("\nDescriptions:\n1. Practice: Practice typing a word in a chosen language.\n2. Show Stats: Display your typing statistics.\n3. Exit: Exit the program. (Enter the option number)\n")
         action = self.view.get_user_input()
-        action = int(action)
-        if action == 3:
-            break
-        elif action == 1:
-            self.practice()
-        elif action == 2:
-            self.show_stats()
-        language_choice = self.view.get_language_choice()
-        language = 'English' if language_choice == 1 else 'Hebrew' if language_choice == 2 else None
-        self.model.set_language(language)
-        word = self.model.get_word()
+            action = int(action)
+            if action == 3:
+                break
+            elif action == 1:
+                self.practice()
+            elif action == 2:
+                pass
+            language_choice = self.view.get_language_choice()
+            language = 'English' if language_choice == 1 else 'Hebrew' if language_choice == 2 else None
+            self.model.set_language(language)
+            word = self.model.get_word()
         self.view.display_word(word)
         user_input = self.view.get_user_input()
         success = self.model.check_word(user_input)
@@ -72,10 +72,3 @@ def run(self):
     user_input = self.view.get_user_input()
     success = self.model.check_word(user_input)
     self.model.update_stats(success)
-
-    def show_stats(self):
-        """
-        Retrieves the user's typing statistics from the Model and displays them using the View.
-        """
-    stats = self.model.get_stats()
-    self.view.display_stats(stats)
