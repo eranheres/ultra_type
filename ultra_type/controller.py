@@ -20,9 +20,9 @@ class Controller:
                 self.show_stats()
 
     def practice(self):
-"""
-The Controller class is responsible for managing the interaction between the Model and View classes.
-"""
+        """
+        The Controller class is responsible for managing the interaction between the Model and View classes.
+        """
 
 def __init__(self, model: Model, view: View):
     """
@@ -59,11 +59,11 @@ def run(self):
     def show_stats(self):
         stats = self.model.get_stats()
         self.view.display_stats(stats)
-def practice(self):
-    """
-    Allows the user to practice typing a word in a chosen language, checks the user's input against the correct word, 
-    and updates the user's statistics based on whether they typed the word correctly.
-    """
+    def practice(self):
+        """
+        Allows the user to practice typing a word in a chosen language, checks the user's input against the correct word, 
+        and updates the user's statistics based on whether they typed the word correctly.
+        """
     language_choice = self.view.get_language_choice()
     language = 'English' if language_choice == 1 else 'Hebrew' if language_choice == 2 else None
     self.model.set_language(language)
@@ -73,9 +73,9 @@ def practice(self):
     success = self.model.check_word(user_input)
     self.model.update_stats(success)
 
-def show_stats(self):
-    """
-    Retrieves the user's typing statistics from the Model and displays them using the View.
-    """
+    def show_stats(self):
+        """
+        Retrieves the user's typing statistics from the Model and displays them using the View.
+        """
     stats = self.model.get_stats()
     self.view.display_stats(stats)
