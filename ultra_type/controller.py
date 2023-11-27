@@ -24,9 +24,9 @@ class Controller:
                 self.show_stats()
 
     def practice(self):
-def change_user(self):
-    user = self.view.get_user_input("Enter new user name: ")
-    self.model.set_user(user)
+    def change_user(self):
+        user = self.view.get_user_input("Enter new user name: ")
+        self.model.set_user(user)
 
 def select_language(self):
     language = self.view.get_language_choice()
@@ -38,5 +38,7 @@ def select_language(self):
         self.model.update_stats(success)
 
     def show_stats(self):
+        stats = self.model.get_stats()
+        self.view.display_stats(stats)
         stats = self.model.get_stats()
         self.view.display_stats(stats)
