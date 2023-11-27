@@ -4,6 +4,8 @@ from ultra_type.model import Model
 
 def main():
     model = Model()
+    model.set_user("default")
+    model.set_language("English")
     view = View()
     controller = Controller(model, view)
     controller.run()
