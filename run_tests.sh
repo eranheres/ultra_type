@@ -1,8 +1,25 @@
 #!/bin/bash
 
 # Run pytest and store its exit status
-# shellcheck disable=SC2046
-poetry run pytest -q -x -rN -k $(basename $1)
+# If specific filename then run only that test if not then run on all files
+if [ -z "$1" ]; then
+  pylint -E **/*.py
+else
+  pylint -E "$1"
+fi
+result=$?
+
+if [ $result -ne 0 ] && [ $result -ne 5 ]; then
+    exit 1 # Exit with an error status
+else
+    exit 0 # Exit with a success status
+fi
+
+if [ -z "$1" ]; then
+  pytest -q -x -rN -k $(basename $1)
+else
+  pytest -q -x -rN
+fi
 result=$?
 
 # pytest exit codes:

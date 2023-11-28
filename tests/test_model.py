@@ -12,25 +12,21 @@ class TestModelUpdateStats(unittest.TestCase):
     def test_update_stats(self, mock_statistics_update):
         # Arrange
         model = Model()
-        success = True  # or False, depending on the test case
 
         # Act
-        model.update_stats(success)
+        model.update_stats(
+            word="word",
+            char=chr(99),
+            user_input="u",
+            time=0.0)
 
         # Assert
-        mock_statistics_update.assert_called_once_with(success)
-
-    @patch("ultra_type.statistics.Statistics.update")
-    def test_update_stats_failure(self, mock_statistics_update):
-        # Arrange
-        model = Model()
-        success = False
-
-        # Act
-        model.update_stats(success)
-
-        # Assert
-        mock_statistics_update.assert_called_once_with(success)
+        mock_statistics_update.assert_called_once_with({
+            "word": "word",
+            "char": chr(99),
+            "user_input": "u",
+            "time": 0.0,
+        })
 
 
 class TestModelGetStats(unittest.TestCase):

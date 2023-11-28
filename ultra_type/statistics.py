@@ -1,14 +1,11 @@
 class Statistics:
-    def __init__(self):
+    def __init__(self, stats):
         self.success_count = 0
         self.total_count = 0
+        self.stats = stats
 
-    def update(self, success: bool):
-        self.total_count += 1
-        if success:
-            self.success_count += 1
+    def update(self, record):
+        self.stats.append(record)
 
     def get_stats(self):
-        return {
-            'success_rate': self.success_count / self.total_count if self.total_count > 0 else 0
-        }
+        return self.stats

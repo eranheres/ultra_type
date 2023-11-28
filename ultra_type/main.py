@@ -1,6 +1,9 @@
 from ultra_type.controller import Controller
 from ultra_type.view import View
 from ultra_type.model import Model
+import pydevd
+import pydevd_pycharm
+
 
 def main():
     model = Model()
@@ -9,4 +12,5 @@ def main():
     controller.run()
 
 if __name__ == "__main__":
+    print("Welcome to Ultra Type!")
     main()

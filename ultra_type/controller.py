@@ -9,26 +9,49 @@ class Controller:
     def run(self):
         while True:
             self.view.display_word("Menu:\n1. Practice\n2. Show Stats\n3. Exit")
-            self.view.display_word("\nDescriptions:\n1. Practice: Practice typing a word in a chosen language.\n2. Show Stats: Display your typing statistics.\n3. Exit: Exit the program. (Enter the option number)\n")
-            action = self.view.get_user_input()
-            action = int(action)
-            if action == 3:
+            action = self.view.get_user_number()
+            if action == '3':
+                self.model.save_stats()
                 break
-            elif action == 1:
+            elif action == '1':
                 self.practice()
-            elif action == 2:
+            elif action == '2':
                 self.show_stats()
 
+    def _practice_session(self, practice_str: str):
+        pos = 0
+        word_cnt = 0
+        while True:
+            user_input, time = self.view.get_user_char(pos)
+            if pos != 0:
+                self.model.update_stats(
+                    practice_str.split(' ')[word_cnt],
+                    practice_str[pos],
+                    user_input,
+                    time)
+            if user_input == ' ':
+                word_cnt += 1
+            if user_input != practice_str[pos]:
+                continue
+            self.view.display_typed_char(user_input, pos)
+            pos += 1
+            if pos >= len(practice_str):
+                break
+
     def practice(self):
-        language_choice = self.view.get_language_choice()
-        language = 'English' if language_choice == 1 else 'Hebrew' if language_choice == 2 else None
-        self.model.set_language(language)
-        word = self.model.get_word()
+        word = "This is a test"
         self.view.display_word(word)
-        user_input = self.view.get_user_input()
-        success = self.model.check_word(user_input)
-        self.model.update_stats(success)
+        self._practice_session(word)
 
     def show_stats(self):
         stats = self.model.get_stats()
         self.view.display_stats(stats)
+
+
+
+# run if main
+if __name__ == '__main__':
+    model = Model()
+    view = View()
+    controller = Controller(model, view)
+    controller.practice()
