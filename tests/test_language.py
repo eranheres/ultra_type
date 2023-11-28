@@ -1,5 +1,6 @@
 import unittest
 
+from ultra_type import language
 from ultra_type.language import Language
 
 
@@ -19,12 +20,14 @@ class TestLanguageCheckWord(unittest.TestCase):
         result = self.language.check_word(word)
         self.assertTrue(result)
 
+
     def test_check_word_does_not_exist(self):
         # Test that check_word returns False for a word that does not exist in the language's words
         word = 'goodbye'
         result = self.language.check_word(word)
         self.assertFalse(result)
         self.hebrew_language = Language('Hebrew')
+    
     def test_check_word_empty_string(self):
         # Test that check_word returns False for an empty string
         word = ''
@@ -39,8 +42,7 @@ class TestLanguageLoadWords(unittest.TestCase):
         self.english_language = Language('English')
         
         self.hebrew_language = Language('Hebrew')
-
-    
+        self.hebrew_language = Language('Hebrew')
 
     def test_load_words_english(self):
         expected_words = ['word1', 'word2', 'word3']
@@ -51,8 +53,8 @@ class TestLanguageLoadWords(unittest.TestCase):
         self.assertEqual(self.hebrew_language.words, expected_words)
 
     def test_load_words_unsupported_language(self):
-        language = Language('Spanish')  # Unsupported language
         self.assertEqual(language.load_words(), [])  # Expect an empty list
+
 
 class TestLanguageGetWord(unittest.TestCase):
 
@@ -75,3 +77,4 @@ class TestLanguageGetWord(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+        
