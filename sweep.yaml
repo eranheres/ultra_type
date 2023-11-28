@@ -46,8 +46,7 @@ docs:
 # Sandbox executes commands in a sandboxed environment to validate code changes after every edit to guarantee pristine code. For more details, see the [Sandbox](./sandbox) page.
 sandbox:
   install:
-    - pip install -r requirements.txt
+    - . ./run_setup.sh
   check:
-    - 'if [[ "{file_path}" == *.py ]]; then PYTHONPATH=. poetry run pylint --errors-only {file_path}; else exit 0; fi'
     - ./run_tests.sh {file_path}
 
