@@ -1,7 +1,5 @@
 class Statistics:
     def __init__(self, stats):
-        self.success_count = 0
-        self.total_count = 0
         self.stats = stats
 
     def update(self, record):

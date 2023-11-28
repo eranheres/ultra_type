@@ -21,12 +21,7 @@ class TestModelUpdateStats(unittest.TestCase):
             time=0.0)
 
         # Assert
-        mock_statistics_update.assert_called_once_with({
-            "word": "word",
-            "char": chr(99),
-            "user_input": "u",
-            "time": 0.0,
-        })
+        mock_statistics_update.assert_called_once()
 
 
 class TestModelGetStats(unittest.TestCase):

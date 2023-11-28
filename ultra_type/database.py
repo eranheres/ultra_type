@@ -1,23 +1,41 @@
 import sqlite3
 
 class Database:
+    FIELD_STRACTURE = {
+        "input_time": "datetime",
+        "word": "text",
+        "char": "text",
+        "user_input": "text",
+        "time": "real",
+    }
     def __init__(self, db_name='ultra_type.db'):
         self.db_name = db_name
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
-        c.execute('''CREATE TABLE IF NOT EXISTS stats
-            (word text, char text, user_input text, time real)''')
+        c.execute(f'CREATE TABLE IF NOT EXISTS stats ({self._field_stracture_to_field_names()})')
         conn.commit()
         conn.close()
         pass
 
+    def _field_stracture_to_field_names(self):
+        # return the following string 'input_time datetime, word text, char text, user_input text, speed real'
+        return ', '.join([f'{field_name} {field_type}' for field_name, field_type in self.FIELD_STRACTURE.items()])
+
+    def _field_stracture_dict_to_tuple(self, field_stracture_dict):
+        # returns the following tuple ('2021-01-01 00:00:00', 'hello', 'h', 'h', 0.1)
+        return tuple([field_stracture_dict[field_name] for field_name in self.FIELD_STRACTURE.keys()])
+
+    def _field_stracture_tuple_to_dict(self, field_stracture_tuple):
+        # returns the following dict {'input_time': '2021-01-01 00:00:00', 'word': 'hello', 'char': 'h', 'user_input': 'h', 'time': 0.1}
+        return {field_name: field_stracture_tuple[index] for index, field_name in enumerate(self.FIELD_STRACTURE.keys())}
+
     def save_stats(self, stats):
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
-        c.execute('''CREATE TABLE IF NOT EXISTS stats
-            (word text, char text, user_input text, time real)''')
-        for record in stats:
-            c.execute("INSERT INTO stats VALUES (:word, :char, :user_input, :time)", record)
+        c.execute(f'CREATE TABLE IF NOT EXISTS stats ({self._field_stracture_to_field_names()})')
+        for stat in stats:
+            record = self._field_stracture_dict_to_tuple(stat)
+            c.execute("INSERT INTO stats VALUES (:datetime, :word, :char, :user_input, :time)", record)
         conn.commit()
         conn.close()
 
@@ -27,9 +45,4 @@ class Database:
         c.execute("SELECT * FROM stats")
         stats = c.fetchall()
         conn.close()
-        return [{
-            "word": stat[0],
-            "char": stat[1],
-            "user_input": stat[2],
-            "time": stat[3],
-        } for stat in stats]
+        return [self._field_stracture_tuple_to_dict(stat) for stat in stats]

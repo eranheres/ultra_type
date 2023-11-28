@@ -12,30 +12,35 @@ class TestDatabase:
         db = Database(db_name)
         stats = [
             {
+                "input_time": "2021-01-01 00:00:00",
                 "word": "hello",
                 "char": "h",
                 "user_input": "h",
                 "time": 0.1,
             },
             {
+                "input_time": "2021-01-01 00:00:01",
                 "word": "hello",
                 "char": "e",
                 "user_input": "e",
                 "time": 0.2,
             },
             {
+                "input_time": "2021-01-01 00:00:02",
                 "word": "hello",
                 "char": "l",
                 "user_input": "l",
                 "time": 0.3,
             },
             {
+                "input_time": "2021-01-01 00:00:03",
                 "word": "hello",
                 "char": "l",
                 "user_input": "l",
                 "time": 0.4,
             },
             {
+                "input_time": "2021-01-01 00:00:04",
                 "word": "hello",
                 "char": "o",
                 "user_input": "o",

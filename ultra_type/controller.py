@@ -21,18 +21,20 @@ class Controller:
     def _practice_session(self, practice_str: str):
         pos = 0
         word_cnt = 0
+        started = False
         while True:
             user_input, time = self.view.get_user_char(pos)
-            if pos != 0:
+            started = True
+            if started:
                 self.model.update_stats(
                     practice_str.split(' ')[word_cnt],
                     practice_str[pos],
                     user_input,
                     time)
-            if user_input == ' ':
-                word_cnt += 1
             if user_input != practice_str[pos]:
                 continue
+            if user_input == ' ':
+                word_cnt += 1
             self.view.display_typed_char(user_input, pos)
             pos += 1
             if pos >= len(practice_str):

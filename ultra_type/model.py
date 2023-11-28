@@ -1,6 +1,7 @@
 from ultra_type.database import Database
 from ultra_type.language import Language
 from ultra_type.statistics import Statistics
+import datetime
 
 class Model:
     def __init__(self):
@@ -19,6 +20,7 @@ class Model:
 
     def update_stats(self, word: str, char: chr, user_input: chr, time: float):
         self.statistics.update({
+            "input_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "word": word,
             "char": char,
             "user_input": user_input,
