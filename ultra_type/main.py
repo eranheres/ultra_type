@@ -1,8 +1,6 @@
 from ultra_type.controller import Controller
 from ultra_type.view import View
 from ultra_type.model import Model
-import pydevd
-import pydevd_pycharm
 
 
 def main():
