@@ -1,5 +1,4 @@
 import unittest
-from unittest.mock import MagicMock, patch
 
 from ultra_type.language import Language
 
@@ -25,9 +24,7 @@ class TestLanguageCheckWord(unittest.TestCase):
         word = 'goodbye'
         result = self.language.check_word(word)
         self.assertFalse(result)
-
-    # Additional tests can be added here to cover more edge cases or scenarios.
-
+        self.hebrew_language = Language('Hebrew')
     def test_check_word_empty_string(self):
         # Test that check_word returns False for an empty string
         word = ''
