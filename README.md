@@ -25,4 +25,8 @@
 - [x] Move view functions from model to view.
 - [x] Display statistics based on users language
 - [ ] Show WPM and accuracy in real time
+- [ ] Save the practice id in the database
 - [ ] Support practice that use brings his own text
+- [ ] Show settings in the view
+- [ ] Center the text and the practice in the view
+- [ ] Show screen rectangle in the view
