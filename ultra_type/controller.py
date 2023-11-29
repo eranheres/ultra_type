@@ -1,9 +1,9 @@
 from ultra_type.model import Model
 from ultra_type.view import View
-from ultra_type.languages.lang_english import English
-from ultra_type.languages.lang_hebrew import Hebrew
-
+from ultra_type.languages.language import English, Hebrew
 from ultra_type.practices.practice import PracticeWeakLetters, PracticeRandom, PracticeWeakWords
+
+
 class Controller:
     def __init__(self, model: Model, view: View):
         self.model = model
@@ -12,34 +12,28 @@ class Controller:
 
     def run(self):
         while True:
-            self.view.display_text("Menu:\n1. Practice\n2. Show Stats\n3. Change Language\n4. Change practice.\n5. Exit\n")
-            action = self.view.get_user_number()
+            action = self.view.get_main_menu_selection()
             if action == '1':
                 self.practice()
             elif action == '2':
-                self.show_stats()
+                char_times = self.model.statistics.get_char_times(self.model.language.name)
+                self.view.show_stats(char_times)
             elif action == '3':
                 self._change_lang()
             elif action == '4':
                 self._change_practice()
             if action == '5':
-                self.model.save_stats()
                 break
 
-
     def _change_practice(self):
-        self.view.display_text("Choose practice:\n1. Random\n2. Weak Words\n3. Weak Letters\n")
-        action = self.view.get_user_number()
-        if action == '1':
-            self.model.practice = PracticeRandom()
-        elif action == '2':
-            self.model.practice = PracticeWeakWords()
-        elif action == '3':
-            self.model.practice = PracticeWeakLetters()
+        self.model.practice = self.view.get_practice_selection([
+            PracticeRandom(),
+            PracticeWeakWords(),
+            PracticeWeakLetters()
+        ])
 
     def _change_lang(self):
-        self.view.display_text("Choose language:\n1. English\n2. Hebrew\n")
-        action = self.view.get_user_number()
+        action = self.view.get_language_choice()
         if action == '1':
             self.model.language = English()
         elif action == '2':

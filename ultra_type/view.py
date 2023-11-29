@@ -18,6 +18,23 @@ class View:
         if self.curses_available:
             curses.endwin()
 
+    def get_main_menu_selection(self):
+        self.display_text(
+            "Menu:\n"
+            "1. Practice\n"
+            "2. Show Stats\n"
+            "3. Change Language\n"
+            "4. Change practice.\n"
+            "5. Exit\n")
+        return self.get_user_number()
+
+    def get_language_choice(self):
+        self.display_text(
+            "Choose language:\n"
+            "1. English\n"
+            "2. Hebrew\n")
+        return self.get_user_number()
+
     def get_user_number(self):
         # start a timer
         return chr(self.stdscr.getch())
@@ -64,7 +81,6 @@ class View:
         user_input = ''
         while True:
             c = chr(self.stdscr.getch())
-            c = self.get_user_char(2, False)
             if c == '\n':
                 break
             # echo the character back to the screen
@@ -72,12 +88,6 @@ class View:
             user_input += c
 
         return user_input
-
-    def get_language_choice(self):
-        self.stdscr.addstr("Choose a language: 1. English 2. Hebrew")
-        self.stdscr.refresh()
-        choice = int(self.stdscr.getstr().decode('utf-8'))
-        return 'English' if choice == 1 else 'Hebrew' if choice == 2 else None
 
     def display_text(self, word: str):
         self.stdscr.clear()
@@ -128,44 +138,22 @@ class View:
         self.stdscr.refresh()
         self.stdscr.getch()
 
-    def get_average_times(self, data: list):
-        word_times = {}
-        char_times = {}
-
-        # Accumulate times and count occurrences
-        for entry in data:
-            word = entry['word']
-            char = entry['char']
-            time = entry['time']
-
-            if word in word_times:
-                word_times[word]['total'] += time
-                word_times[word]['count'] += 1
-            else:
-                word_times[word] = {'total': time, 'count': 1}
-
-            if char in char_times:
-                char_times[char]['total'] += time
-                char_times[char]['count'] += 1
-            else:
-                char_times[char] = {'total': time, 'count': 1}
-
-        # Calculate and print average times for each word
-        str = ""
-        #str += "Average Time per Word:\n"
-        #for word, info in word_times.items():
-        #    average = info['total'] / info['count']
-        #    str += f"Word '{word}': {average} sec\n"
-
-        # Calculate and print average times for each letter
-        str += "\nAverage Time per Character:\n"
+    def show_stats(self, char_times: {}):
+        str = "Average Time per Character:\n"
         for char, info in char_times.items():
             average = info['total'] / info['count']
             str += f"Character '{char}': {average} sec\n"
-        return str
+        self.display_text(str)
+        self.get_user_number()
 
-
-# No lines to replace
+    def get_practice_selection(self, practices: []):
+        self.stdscr.clear()
+        self.stdscr.addstr("Choose practice:\n")
+        for i, practice in enumerate(practices):
+            self.stdscr.addstr(f"{i+1}. {practice.description}\n")
+        self.stdscr.refresh()
+        choice = int(self.get_user_number())
+        return practices[choice - 1]
 
 # run if main
 if __name__ == '__main__':

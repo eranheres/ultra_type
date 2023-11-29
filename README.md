@@ -20,6 +20,9 @@
 - [x] Enable right to left option for languages that are written from right to left.
 - [x] Enable the user to choose the lessons they want to practice.
 - [x] Support multiple lines
+- [x] Save user settings
+- [x] Move view functions from controller to view.
+- [x] Move view functions from model to view.
+- [x] Display statistics based on users language
+- [ ] Show WPM and accuracy in real time
 - [ ] Support practice that use brings his own text
-- [ ] Move view functions from controller to view.
-- [ ] Move view functions from model to view.

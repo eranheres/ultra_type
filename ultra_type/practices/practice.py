@@ -4,8 +4,12 @@ import random
 from ultra_type.languages.language import Language
 
 class Practice:
-    def __init__(self, name: str):
-        self.name = name
+    def __init__(self, description: str):
+        self._description = description
+
+    @property
+    def description(self):
+        return self._description
 
     def generate_practice(self, lang: Language):
         assert NotImplementedError("This method must be implemented by the derived class")

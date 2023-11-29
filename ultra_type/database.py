@@ -1,8 +1,10 @@
 import sqlite3
+import json
 
 class Database:
     FIELD_STRACTURE = {
         "input_time": "datetime",
+        "language": "text",
         "word": "text",
         "char": "text",
         "user_input": "text",
@@ -46,3 +48,15 @@ class Database:
         stats = c.fetchall()
         conn.close()
         return [self._field_stracture_tuple_to_dict(stat) for stat in stats]
+
+    def save_settings(self, settings):
+        with open('settings.json', 'w') as f:
+            json.dump(settings, f)
+
+    def load_settings(self, default_settings):
+        try:
+            with open('settings.json') as f:
+                settings = json.load(f)
+        except:
+            settings = default_settings
+        return settings
