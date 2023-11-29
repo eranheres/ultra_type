@@ -1,25 +1,38 @@
 from ultra_type.database import Database
-from ultra_type.language import Language
+from ultra_type.languages.language import Language
 from ultra_type.statistics import Statistics
+from ultra_type.languages.lang_english import English
+from ultra_type.practices.practice import PracticeRandom
 import datetime
 
 class Model:
     def __init__(self):
         self.database = Database()
-        self.language = None
-        self.statistics = Statistics(self.database.load_stats())
+        self.language = English() # Default language is English
+        self._statistics = Statistics(self.database.load_stats())
+        self.practice = PracticeRandom()
 
-    def set_language(self, language: str):
-        self.language = Language(language)
+    def get_stats(self):
+        return self._statistics.get_stats()
 
-    def get_word(self):
-        return self.language.get_word()
+    @property
+    def language(self):
+        return self._language
 
-    def check_word(self, word: str):
-        return self.language.check_word(word)
+    @language.setter
+    def language(self, lang: Language):
+        self._language = lang
+
+    @property
+    def practice(self):
+        return self._practice
+
+    @practice.setter
+    def practice(self, practice):
+        self._practice = practice
 
     def update_stats(self, word: str, char: chr, user_input: chr, time: float):
-        self.statistics.update({
+        self._statistics.update({
             "input_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "word": word,
             "char": char,
@@ -27,8 +40,6 @@ class Model:
             "time": time,
         })
 
-    def get_stats(self):
-        return self.statistics.get_stats()
 
     def save_stats(self):
-        self.database.save_stats(self.statistics.get_stats())
+        self.database.save_stats(self._statistics.get_stats())

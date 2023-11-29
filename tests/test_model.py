@@ -1,9 +1,8 @@
 import unittest
 from unittest.mock import patch
-from unittest import skip
+
 
 from ultra_type.model import Model
-from ultra_type.language import Language
 
 
 class TestModelUpdateStats(unittest.TestCase):
@@ -53,80 +52,7 @@ class TestModelGetStats(unittest.TestCase):
         self.assertEqual(stats, {"total_games": 0, "average_score": 0})
 
 
-class TestModelSetLanguage(unittest.TestCase):
 
-    def setUp(self):
-        self.lang = Language("Test")
-
-    @patch("ultra_type.model.Language")
-    def test_set_language(self, mock_language_constructor):
-        # Arrange
-        model = Model()
-        test_language = "English"
-        mock_language = mock_language_constructor.return_value
-
-        # Act
-        model.set_language(test_language)
-
-        # Assert
-        mock_language_constructor.assert_called_once_with(test_language)
-        self.assertEqual(model.language, mock_language)
-
-    @patch("ultra_type.model.Language")
-    def test_set_language_invalid_language(self, mock_language_constructor):
-        # Arrange
-        model = Model()
-        test_language = "InvalidLanguage"
-        mock_language_constructor.side_effect = ValueError("Invalid language")
-
-        # Act & Assert
-        with self.assertRaises(ValueError):
-            model.set_language(test_language)
-        mock_language_constructor.assert_called_once_with(test_language)
-
-    @patch("ultra_type.model.Language")
-    def test_set_language_empty_string(self, mock_language_constructor):
-        # Arrange
-        model = Model()
-        test_language = ""
-        mock_language_constructor.side_effect = ValueError("Language cannot be empty")
-
-        # Act & Assert
-        with self.assertRaises(ValueError):
-            model.set_language(test_language)
-        mock_language_constructor.assert_called_once_with(test_language)
-
-
-class TestModel(unittest.TestCase):
-
-    def setUp(self):
-        self.model = Model()  # Assuming Model() does not require arguments
-
-    @patch('ultra_type.model.Model.check_word')
-    def test_check_word_with_valid_word(self, mock_check_word):
-        # Arrange
-        valid_word = "example"
-        mock_check_word.return_value = True
-
-        # Act
-        result = self.model.check_word(valid_word)
-
-        # Assert
-        self.assertTrue(result)
-        mock_check_word.assert_called_once_with(valid_word)
-
-    @patch('ultra_type.model.Model.check_word')
-    def test_check_word_with_invalid_word(self, mock_check_word):
-        # Arrange
-        invalid_word = "examp1e"
-        mock_check_word.return_value = False
-
-        # Act
-        result = self.model.check_word(invalid_word)
-
-        # Assert
-        self.assertFalse(result)
-        mock_check_word.assert_called_once_with(invalid_word)
 
 
 if __name__ == "__main__":

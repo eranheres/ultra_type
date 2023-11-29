@@ -1,4 +1,3 @@
-Let's start by defining the core classes, functions, and methods that will be necessary for this application:
 
 1. `main.py`: This will be the entry point of the application. It will initialize the application and handle the user's input.
 
@@ -16,6 +15,11 @@ Let's start by defining the core classes, functions, and methods that will be ne
 
 8. `test_controller.py`, `test_model.py`, `test_view.py`, `test_database.py`, `test_language.py`, `test_statistics.py`: These will contain the unit tests for the corresponding classes.
 
-Now, let's start with the `main.py` file:
+## To Do
 
-main.py
+- [x] Enable right to left option for languages that are written from right to left.
+- [x] Enable the user to choose the lessons they want to practice.
+- [x] Support multiple lines
+- [ ] Support practice that use brings his own text
+- [ ] Move view functions from controller to view.
+- [ ] Move view functions from model to view.
