@@ -35,6 +35,11 @@ class View:
             "2. Hebrew\n")
         return self.get_user_number()
 
+    def show_practice_stats(self, word_cnt: int, wpm: int):
+        self.display_str_at(0, 50, f"Word count: {word_cnt}\n")
+        self.display_str_at(1, 50, f"WPM: {wpm}\n")
+        self.stdscr.refresh()
+
     def get_user_number(self):
         # start a timer
         return chr(self.stdscr.getch())
@@ -55,7 +60,6 @@ class View:
 
     def display_typed_char(self, char: str, pos: int, practice: str, is_ltr):
         y, x = self.get_line_col_for_practice(pos, practice)
-        self.display_str_at(0, 40, f"y: {y} x: {x}")
         if not is_ltr:
             self.stdscr.move(y * 2 + 1, self.screen_width - x - 1)
         else:
@@ -66,14 +70,11 @@ class View:
     # Gets a key stroke from the user at a specific position and return it and return the time it took to type it
     def get_user_char(self, pos: int, practice: str, is_ltr: bool):
         y, x = self.get_line_col_for_practice(pos, practice)
-        start = time.perf_counter()
         if not is_ltr:
             self.stdscr.move(y * 2 + 1, self.screen_width - x - 1)
         else:
             self.stdscr.move(y * 2 + 1, x)
-        c = chr(self.stdscr.getch())
-        end = time.perf_counter()
-        return c, end - start
+        return chr(self.stdscr.getch())
 
     def get_user_text(self):
         # use curses to get user input character by character

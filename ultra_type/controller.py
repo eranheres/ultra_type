@@ -2,7 +2,7 @@ from ultra_type.model import Model
 from ultra_type.view import View
 from ultra_type.languages.language import English, Hebrew
 from ultra_type.practices.practice import PracticeWeakLetters, PracticeRandom, PracticeWeakWords
-
+import time
 
 class Controller:
     def __init__(self, model: Model, view: View):
@@ -43,17 +43,25 @@ class Controller:
         pos = 0
         word_cnt = 0
         started = False
+        start_practice = time.perf_counter()
         while True:
-            user_input, time = self.view.get_user_char(pos,
-                                                       practice_str,
-                                                       self.model.language.is_ltr())
+            practice_time = time.perf_counter() - start_practice
+            self.view.show_practice_stats(
+                word_cnt,
+                int(pos / 5 / (practice_time / 60))
+            )
+            start = time.perf_counter()
+            user_input = self.view.get_user_char(pos,
+                                                 practice_str,
+                                                 self.model.language.is_ltr())
+            char_time = time.perf_counter() - start
             mapped_char = self.model.language.map_keyboard_layout(user_input)
             if started:
                 self.model.update_stats(
                     practice_str.split(' ')[word_cnt],
                     practice_str[pos],
                     mapped_char,
-                    time)
+                    char_time)
             started = True
             if mapped_char != practice_str[pos]:
                 continue
