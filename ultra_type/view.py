@@ -133,13 +133,6 @@ class View:
             self.stdscr.refresh()
             line_num += 1
 
-    def display_stats(self, stats: list):
-        self.stdscr.clear()
-        stat_str = self.get_average_times(stats)
-        self.stdscr.addstr(stat_str)
-        self.stdscr.refresh()
-        self.stdscr.getch()
-
     def show_stats(self, char_times: {}):
         str = "Average Time per Character:\n"
         for char, info in char_times.items():

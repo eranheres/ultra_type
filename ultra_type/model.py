@@ -5,8 +5,10 @@ import datetime
 import importlib
 
 class Model:
+
+
     def __init__(self):
-        self.database = Database()
+        self.database = Database(db_name="ultra_type.db", stats_fields=Statistics.FIELD_STRACTURE)
         self._statistics = Statistics(self.database.load_stats())
         self.load_setting()
 
@@ -34,9 +36,12 @@ class Model:
     def practice(self, practice):
         self._practice = practice
 
-    def update_stats(self, word: str, char: chr, user_input: chr, time: float):
+    def update_stats(self, practice_name: str, practice_guid: str, word: str, char: chr, user_input: chr, time: float):
+        # generate guid
         self._statistics.update({
             "input_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "practice_name": practice_name,
+            "practice_guid": practice_guid,
             "language": self.language.name,
             "word": word,
             "char": char,
@@ -45,7 +50,7 @@ class Model:
         })
 
     def save_stats(self):
-        self.database.save_stats(self._statistics.get_stats())
+        self.database.save_stats(self.statistics.get_stats())
 
     def save_setting(self):
         settings = {

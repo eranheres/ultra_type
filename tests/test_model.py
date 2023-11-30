@@ -14,6 +14,8 @@ class TestModelUpdateStats(unittest.TestCase):
 
         # Act
         model.update_stats(
+            practice_name= "practice_name",
+            practice_guid= "practice_guid",
             word="word",
             char=chr(99),
             user_input="u",
@@ -32,7 +34,7 @@ class TestModelGetStats(unittest.TestCase):
         model = Model()
 
         # Act
-        stats = model.get_stats()
+        stats = model.statistics.get_stats()
 
         # Assert
         mock_get_stats.assert_called_once()
@@ -45,12 +47,23 @@ class TestModelGetStats(unittest.TestCase):
         model = Model()
 
         # Act
-        stats = model.get_stats()
+        stats = model.statistics.get_stats()
 
         # Assert
         mock_get_stats.assert_called_once()
         self.assertEqual(stats, {"total_games": 0, "average_score": 0})
 
+    @patch("ultra_type.database.Database.save_stats")
+    def test_save_stats(self, mock_save_stats):
+        # Arrange
+        model = Model()
+
+        # Act
+        model.save_stats()
+
+        # Assert
+        mock_save_stats.assert_called_once()
+        self.assertTrue(True)
 
 
 

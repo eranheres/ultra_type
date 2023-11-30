@@ -1,3 +1,5 @@
+import uuid
+
 from ultra_type.model import Model
 from ultra_type.view import View
 from ultra_type.languages.language import English, Hebrew
@@ -40,6 +42,7 @@ class Controller:
             self.model.language = Hebrew()
 
     def _practice_session(self, practice_str: str):
+        practice_guid = str(uuid.uuid4())
         pos = 0
         word_cnt = 0
         err_cnt = 0
@@ -60,10 +63,12 @@ class Controller:
             mapped_char = self.model.language.map_keyboard_layout(user_input)
             if started:
                 self.model.update_stats(
-                    practice_str.split(' ')[word_cnt],
-                    practice_str[pos],
-                    mapped_char,
-                    char_time)
+                    practice_name=self.model.practice.__class__.__name__,
+                    practice_guid=practice_guid,
+                    word=practice_str.split(' ')[word_cnt],
+                    char=practice_str[pos],
+                    user_input=user_input,
+                    time=char_time)
             started = True
             if mapped_char != practice_str[pos]:
                 err_cnt += 1
@@ -83,10 +88,6 @@ class Controller:
         practice_str = practice.generate_practice(self.model.language)
         self.view.display_practice(practice_str, self.model.language.is_ltr())
         self._practice_session(practice_str)
-
-    def show_stats(self):
-        stats = self.model.get_stats()
-        self.view.display_stats(stats)
 
 
 # run if main

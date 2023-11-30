@@ -1,4 +1,15 @@
 class Statistics:
+    FIELD_STRACTURE = {
+        "input_time": "datetime",
+        "practice_name": "text",
+        "practice_guid": "text",
+        "language": "text",
+        "word": "text",
+        "char": "text",
+        "user_input": "text",
+        "time": "real",
+    }
+
     def __init__(self, stats):
         self.stats = stats
 

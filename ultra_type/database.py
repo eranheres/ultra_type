@@ -2,16 +2,9 @@ import sqlite3
 import json
 
 class Database:
-    FIELD_STRACTURE = {
-        "input_time": "datetime",
-        "language": "text",
-        "word": "text",
-        "char": "text",
-        "user_input": "text",
-        "time": "real",
-    }
-    def __init__(self, db_name='ultra_type.db'):
+    def __init__(self, db_name, stats_fields):
         self.db_name = db_name
+        self._fields = stats_fields
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
         c.execute(f'CREATE TABLE IF NOT EXISTS stats ({self._field_stracture_to_field_names()})')
@@ -21,23 +14,39 @@ class Database:
 
     def _field_stracture_to_field_names(self):
         # return the following string 'input_time datetime, word text, char text, user_input text, speed real'
-        return ', '.join([f'{field_name} {field_type}' for field_name, field_type in self.FIELD_STRACTURE.items()])
+        return ', '.join([f'{field_name} {field_type}' for field_name, field_type in self._fields.items()])
 
-    def _field_stracture_dict_to_tuple(self, field_stracture_dict):
+    def _field_stracture_to_field_types(self):
+        # return the following string ':input :text, char text, user_input text, speed real'
+        return ': '.join([f'{field_name}' for field_name in self._fields.items()[0]])
+
+    def _fields_to_db_record(self, field_stracture_dict):
         # returns the following tuple ('2021-01-01 00:00:00', 'hello', 'h', 'h', 0.1)
-        return tuple([field_stracture_dict[field_name] for field_name in self.FIELD_STRACTURE.keys()])
+        return tuple([field_stracture_dict[field_name] for field_name in self._fields.keys()])
 
-    def _field_stracture_tuple_to_dict(self, field_stracture_tuple):
+    def _db_recors_to_fields(self, field_stracture_tuple):
         # returns the following dict {'input_time': '2021-01-01 00:00:00', 'word': 'hello', 'char': 'h', 'user_input': 'h', 'time': 0.1}
-        return {field_name: field_stracture_tuple[index] for index, field_name in enumerate(self.FIELD_STRACTURE.keys())}
+        return {field_name: field_stracture_tuple[index] for index, field_name in enumerate(self._fields.keys())}
 
-    def save_stats(self, stats):
+    def _validate_stats(self, statistics: []):
+        for stat in statistics:
+            for field_name, field_type in self._fields.items():
+                if field_name not in stat:
+                    raise Exception(f"field '{field_name}' is missing in stat")
+            for field_name, field_type in stat.items():
+                if field_name not in self._fields:
+                    raise Exception(f"field '{field_name}' is not in the field structure")
+
+
+    def save_stats(self, statistics: []):
+        self._validate_stats(statistics)
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
         c.execute(f'CREATE TABLE IF NOT EXISTS stats ({self._field_stracture_to_field_names()})')
-        for stat in stats:
-            record = self._field_stracture_dict_to_tuple(stat)
-            c.execute("INSERT INTO stats VALUES (:datetime, :word, :char, :user_input, :time)", record)
+        for stat in statistics:
+            record = self._fields_to_db_record(stat)
+            fields_names = ', '.join([f':{field_name}' for field_name in self._fields.keys()])
+            c.execute(f"INSERT INTO stats VALUES ({fields_names})", record)
         conn.commit()
         conn.close()
 
@@ -47,7 +56,7 @@ class Database:
         c.execute("SELECT * FROM stats")
         stats = c.fetchall()
         conn.close()
-        return [self._field_stracture_tuple_to_dict(stat) for stat in stats]
+        return [self._db_recors_to_fields(stat) for stat in stats]
 
     def save_settings(self, settings):
         with open('settings.json', 'w') as f:

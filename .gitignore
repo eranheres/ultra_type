@@ -160,3 +160,4 @@ cython_debug/
 .idea/
 typing_practice.db
 *.db
+**/settings.json

@@ -12,7 +12,3 @@ class TestView:
             "screen widths."
         ]
         assert expected == View().wrap_text(text, screen_width)
-
-    def test_index(self):
-        response = self.client.get(url_for('index'))
-        self.assertEqual(response.status_code, 200)
