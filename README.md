@@ -24,7 +24,7 @@
 - [x] Move view functions from controller to view.
 - [x] Move view functions from model to view.
 - [x] Display statistics based on users language
-- [ ] Show WPM and accuracy in real time
+- [x] Show WPM and accuracy in real time
 - [ ] Save the practice id in the database
 - [ ] Support practice that use brings his own text
 - [ ] Show settings in the view

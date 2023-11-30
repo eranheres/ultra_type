@@ -42,13 +42,15 @@ class Controller:
     def _practice_session(self, practice_str: str):
         pos = 0
         word_cnt = 0
+        err_cnt = 0
         started = False
         start_practice = time.perf_counter()
         while True:
             practice_time = time.perf_counter() - start_practice
             self.view.show_practice_stats(
-                word_cnt,
-                int(pos / 5 / (practice_time / 60))
+                word_cnt=word_cnt,
+                wpm=int(pos / 5 / (practice_time / 60)),
+                accuracy=100 - int(err_cnt / (pos+1) * 100)
             )
             start = time.perf_counter()
             user_input = self.view.get_user_char(pos,
@@ -64,6 +66,7 @@ class Controller:
                     char_time)
             started = True
             if mapped_char != practice_str[pos]:
+                err_cnt += 1
                 continue
             if mapped_char == ' ':
                 word_cnt += 1

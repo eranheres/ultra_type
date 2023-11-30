@@ -35,9 +35,10 @@ class View:
             "2. Hebrew\n")
         return self.get_user_number()
 
-    def show_practice_stats(self, word_cnt: int, wpm: int):
+    def show_practice_stats(self, word_cnt: int, wpm: int, accuracy: int):
         self.display_str_at(0, 50, f"Word count: {word_cnt}\n")
         self.display_str_at(1, 50, f"WPM: {wpm}\n")
+        self.display_str_at(2, 50, f"Accuracy: {accuracy}%\n")
         self.stdscr.refresh()
 
     def get_user_number(self):
