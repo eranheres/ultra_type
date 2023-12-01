@@ -1,5 +1,5 @@
 import curses
-import time
+import pandas as pd
 from ultra_type.curses_mock import CursesMock
 
 class View:
@@ -18,30 +18,49 @@ class View:
         if self.curses_available:
             curses.endwin()
 
+    def _display_menu(self, options: []):
+        self.stdscr.clear()
+        for i, option in enumerate(options):
+            self.stdscr.addstr(f"{i+1}. {option}\n")
+        self.stdscr.addstr(f"{len(options)+1}. Exit\n")
+        self.stdscr.refresh()
+        while (True):
+            try:
+                key = self.get_user_key()
+                if key == '\x1b' or key == chr(27):
+                    return len(options) + 1
+                if int(key) <= len(options) + 1:
+                    return key
+                # check if key is escape
+                self.display_str_at(7,0,f"Invalid choice, please try again.{int(key)}")
+            except ValueError:
+                pass
+
     def get_main_menu_selection(self):
-        self.display_text(
-            "Menu:\n"
-            "1. Practice\n"
-            "2. Show Stats\n"
-            "3. Change Language\n"
-            "4. Change practice.\n"
-            "5. Exit\n")
-        return self.get_user_number()
+        return self._display_menu([
+            "Practice",
+            "Show Stats",
+            "Change Language",
+            "Change practice",
+            "Save settings"])
 
-    def get_language_choice(self):
-        self.display_text(
-            "Choose language:\n"
-            "1. English\n"
-            "2. Hebrew\n")
-        return self.get_user_number()
+    def show_language_menu(self):
+        return self._display_menu([
+            "English",
+            "Hebrew"])
 
-    def show_practice_stats(self, word_cnt: int, wpm: int, accuracy: int):
+    def show_stats_menu(self):
+        return self._display_menu([
+            "Practice statistics",
+            "Letters speed statistics"])
+
+    def show_rt_practice_stats(self, word_cnt: int, wpm: int, accuracy: int):
         self.display_str_at(0, 50, f"Word count: {word_cnt}\n")
         self.display_str_at(1, 50, f"WPM: {wpm}\n")
         self.display_str_at(2, 50, f"Accuracy: {accuracy}%\n")
         self.stdscr.refresh()
 
-    def get_user_number(self):
+    def get_user_key(self):
         # start a timer
         return chr(self.stdscr.getch())
 
@@ -133,22 +152,23 @@ class View:
             self.stdscr.refresh()
             line_num += 1
 
-    def show_stats(self, char_times: {}):
+    def show_letters_stats(self, char_times: {}):
         str = "Average Time per Character:\n"
         for char, info in char_times.items():
             average = info['total'] / info['count']
             str += f"Character '{char}': {average} sec\n"
         self.display_text(str)
-        self.get_user_number()
+        self.get_user_key()
+
+    def show_practice_stats(self, practice_stats: []):
+        df = pd.DataFrame(practice_stats)
+        tbl = df.to_string(index=False)
+        self.display_text(tbl)
+        self.get_user_key()
 
     def get_practice_selection(self, practices: []):
-        self.stdscr.clear()
-        self.stdscr.addstr("Choose practice:\n")
-        for i, practice in enumerate(practices):
-            self.stdscr.addstr(f"{i+1}. {practice.description}\n")
-        self.stdscr.refresh()
-        choice = int(self.get_user_number())
-        return practices[choice - 1]
+        pass
+        #return self._display_menu([practice.description for practice in practices])
 
 # run if main
 if __name__ == '__main__':

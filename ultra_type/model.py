@@ -12,10 +12,6 @@ class Model:
         self._statistics = Statistics(self.database.load_stats())
         self.load_setting()
 
-    def __del__(self):
-        self.save_stats()
-        self.save_setting()
-
     @property
     def statistics(self):
         return self._statistics

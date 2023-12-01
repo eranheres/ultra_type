@@ -13,20 +13,35 @@ class Controller:
         self.practices = [PracticeRandom(), PracticeWeakWords(), PracticeWeakLetters()]
 
     def run(self):
-        while True:
+        while (True):
             action = self.view.get_main_menu_selection()
             if action == '1':
                 self.practice()
             elif action == '2':
-                char_times = self.model.statistics.get_char_times(self.model.language.name)
-                self.view.show_stats(char_times)
+                self._stats_menu()
             elif action == '3':
                 self._change_lang()
             elif action == '4':
                 self._change_practice()
-            if action == '5':
-                break
+            elif action == '5':
+                self.model.save_stats()
+                self.model.save_setting()
+            elif action == '6':
+                self.model.save_stats()
+                self.model.save_setting()
+                exit(0)
 
+    def _stats_menu(self):
+        while True:
+            choice = self.view.show_stats_menu()
+            if choice == '1':
+                practice_data = self.model.statistics.get_prtactices_data()
+                self.view.show_practice_stats(practice_data)
+            elif choice == '2':
+                char_times = self.model.statistics.get_char_times(self.model.language.name)
+                self.view.show_letters_stats(char_times)
+            elif choice == '3':
+                break
     def _change_practice(self):
         self.model.practice = self.view.get_practice_selection([
             PracticeRandom(),
@@ -35,7 +50,7 @@ class Controller:
         ])
 
     def _change_lang(self):
-        action = self.view.get_language_choice()
+        action = self.view.show_language_menu()
         if action == '1':
             self.model.language = English()
         elif action == '2':
@@ -50,7 +65,7 @@ class Controller:
         start_practice = time.perf_counter()
         while True:
             practice_time = time.perf_counter() - start_practice
-            self.view.show_practice_stats(
+            self.view.show_rt_practice_stats(
                 word_cnt=word_cnt,
                 wpm=int(pos / 5 / (practice_time / 60)),
                 accuracy=100 - int(err_cnt / (pos+1) * 100)

@@ -26,7 +26,7 @@
 - [x] Display statistics based on users language
 - [x] Show WPM and accuracy in real time
 - [x] Save the practice id in the database
-- [ ] Show practices stats
+- [x] Show practices stats
 - [ ] Support practice that use brings his own text
 - [ ] Show settings in the view
 - [ ] Center the text and the practice in the view

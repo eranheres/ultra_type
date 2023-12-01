@@ -38,7 +38,15 @@ class Database:
                     raise Exception(f"field '{field_name}' is not in the field structure")
 
 
+    def clear_stats(self):
+        conn = sqlite3.connect(self.db_name)
+        c = conn.cursor()
+        c.execute(f'DROP TABLE IF EXISTS stats')
+        conn.commit()
+        conn.close()
+
     def save_stats(self, statistics: []):
+        self.clear_stats()
         self._validate_stats(statistics)
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
