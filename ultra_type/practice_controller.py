@@ -33,6 +33,7 @@ class PracticeController:
     def _practice_session(self, practice_str: str):
         practice_guid = str(uuid.uuid4())
         started = False
+        prev_had_error = False
         while True:
             self._view.refresh_display(self._pos)
             start = time.perf_counter()
@@ -50,8 +51,11 @@ class PracticeController:
                     time=char_time)
             started = True
             if str(mapped_char) != str(practice_str[self._pos]):
-                self._err_cnt += 1
+                if not prev_had_error:
+                    self._err_cnt += 1
+                prev_had_error = True
                 continue
+            prev_had_error = False
             if mapped_char == ' ':
                 self._word_cnt += 1
             self._view.display_typed_char(mapped_char, self._pos)
