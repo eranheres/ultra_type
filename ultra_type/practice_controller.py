@@ -15,7 +15,7 @@ class PracticeController:
 
     def run(self):
         practice = self._model.practice
-        practice_str = practice.generate_practice(self._model.language)
+        practice_str = practice.generate_practice(self._model)
         self._view.set_practice_text(practice_str)
         self._practice_session(practice_str)
 

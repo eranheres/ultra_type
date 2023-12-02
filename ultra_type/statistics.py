@@ -21,17 +21,32 @@ class Statistics:
     def get_stats(self):
         return self.stats
 
-    def get_word_times(self):
-        word_times = {}
-        for entry in self.stats:
-            word = entry['word']
-            time = entry['time']
-            if word in word_times:
-                word_times[word]['total'] += time
-                word_times[word]['count'] += 1
-            else:
-                word_times[word] = {'total': time, 'count': 1}
-        return word_times
+    def process_word_data(self):
+        # Convert the list of dictionaries into a pandas DataFrame
+        df = pd.DataFrame(self.stats)
+
+        # Convert 'input_time' to datetime and 'time' to minutes
+        df['input_time'] = pd.to_datetime(df['input_time'])
+        df['time'] = df['time'] / 1e6 / 60  # Convert microseconds to minutes
+
+        # Calculate WPM for each entry (assuming 5 characters per word)
+        df['wpm'] = df['user_input'].apply(len) / (df['time'] * 5)
+
+        # Calculate error rate for each entry
+        df['errors'] = df.apply(lambda x: sum(a != b for a, b in zip(x['user_input'], x['char'])), axis=1)
+        df['error_rate'] = df['errors'] / df['user_input'].apply(len)
+
+        # Group by word and calculate average WPM, error rate, and count
+        word_stats = df.groupby('word').agg({
+            'wpm': 'mean',
+            'error_rate': 'mean',
+            'word': 'count'
+        }).rename(columns={'word': 'count'}).reset_index()
+
+        # Rename columns for clarity
+        word_stats.columns = ['word', 'average_wpm', 'avg_error_rate', 'count']
+        sorted_word_stats = word_stats.sort_values(by=['avg_error_rate','average_wpm'], ascending=[False,True])
+        return sorted_word_stats.to_dict('records')
 
     def get_char_times(self, language: str):
         char_times = {}

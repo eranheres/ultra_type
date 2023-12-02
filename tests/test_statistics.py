@@ -1,4 +1,5 @@
 import unittest
+import pandas as pd
 
 from ultra_type.statistics import Statistics
 
@@ -42,7 +43,7 @@ class TestStatisticsGetPracticesStats():
                 "input_time": "2021-01-01 00:00:02",
                 "practice_name": "practice1",
                 "practice_guid": "5678",
-                "word": "hello",
+                "word": "hello2",
                 "char": "l",
                 "user_input": "l",
                 "time": 0.3,
@@ -51,31 +52,18 @@ class TestStatisticsGetPracticesStats():
                 "input_time": "2021-01-01 00:00:03",
                 "practice_name": "pice1",
                 "practice_guid": "5678",
-                "word": "hello",
+                "word": "hello2",
                 "char": "l",
                 "user_input": "l",
                 "time": 0.4,
             },
         ]
-        import pandas as pd
-        df = pd.DataFrame(data)
+        statistics = Statistics(data)
+        practice_stats = statistics.process_word_data()
 
-        # Convert 'input_time' to datetime and 'time' to seconds
-        df['input_time'] = pd.to_datetime(df['input_time'])
-        df['time'] = df['time'] / 1e6  # Convert microseconds to seconds
-        #print(df)
-        # Calculate character count and accuracy for each practice
-        df['char_count'] = df['user_input'].apply(len)
-        df['correct_chars'] = df.apply(lambda x: sum(a == b for a, b in zip(x['user_input'], x['char'])), axis=1)
-        char_counts = df.groupby('practice_guid').agg({
-            'char_count': 'sum',
-            'correct_chars': 'sum'
-        }).reset_index()
-
-        #print(char_counts)
-        import pandas
-
-        pass
+        df = pd.DataFrame(practice_stats)
+        tbl = df.to_string(index=False)
+        print(tbl)
 
 if __name__ == '__main__':
     unittest.main()

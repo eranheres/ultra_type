@@ -53,10 +53,12 @@ class View:
     def show_stats_menu(self):
         return self._display_menu([
             "Practice statistics",
-            "Letters speed statistics"])
+            "Letters speed statistics",
+            "Words statistics"])
 
-    def show_practice_stats(self, practice_stats: []):
-        df = pd.DataFrame(practice_stats)
+    def show_stats_from_structure(self, stats: []):
+        trimed_stats = stats[0:10]
+        df = pd.DataFrame(trimed_stats)
         tbl = df.to_string(index=False)
         self.display_text(tbl)
         self.get_user_key()

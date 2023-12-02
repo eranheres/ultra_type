@@ -10,7 +10,6 @@ class Controller:
     def __init__(self, model: Model, view: View):
         self.model = model
         self.view = view
-        self.practices = [PracticeRandom(), PracticeWeakWords(), PracticeWeakLetters()]
 
     def run(self):
         while (True):
@@ -41,11 +40,14 @@ class Controller:
             choice = self.view.show_stats_menu()
             if choice == '1':
                 practice_data = self.model.statistics.get_prtactices_data()
-                self.view.show_practice_stats(practice_data)
+                self.view.show_stats_from_structure(practice_data)
             elif choice == '2':
                 char_times = self.model.statistics.get_char_times(self.model.language.name)
                 self.view.show_letters_stats(char_times)
             elif choice == '3':
+                word_stats = self.model.statistics.process_word_data()
+                self.view.show_stats_from_structure(word_stats)
+            elif choice == '4':
                 break
     def _change_practice(self):
         practices = [
@@ -66,7 +68,7 @@ class Controller:
         selection = int(self.view.get_practice_selection(practices))
         if selection >= len(practices):
             return
-        self.model.practice = practices[selection]
+        self.model.practice = practices[selection-1]
 
     def _change_lang(self):
         action = self.view.show_language_menu()

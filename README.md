@@ -30,7 +30,7 @@
 - [x] Fix screen overlap crash
 - [x] Support practice that user brings his own text 
 - [x] Dont count errors twice in the same place
-- [ ] Support weak words practices
+- [x] Support weak words practices
 - [ ] Support weak letters practices
 - [ ] Show settings in the view
 - [ ] Center the text and the practice in the view
