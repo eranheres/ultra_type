@@ -27,7 +27,7 @@
 - [x] Show WPM and accuracy in real time
 - [x] Save the practice id in the database
 - [x] Show practices stats
-- [ ] Fix screen overlap crash
+- [x] Fix screen overlap crash
 - [ ] Support practice that user brings his own text
 - [ ] Support weak words practices
 - [ ] Show settings in the view

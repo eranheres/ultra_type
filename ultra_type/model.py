@@ -6,7 +6,6 @@ import importlib
 
 class Model:
 
-
     def __init__(self):
         self.database = Database(db_name="ultra_type.db", stats_fields=Statistics.FIELD_STRACTURE)
         self._statistics = Statistics(self.database.load_stats())

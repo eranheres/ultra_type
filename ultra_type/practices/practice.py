@@ -26,7 +26,7 @@ class PracticeRandom(Practice):
             data = json.load(f)
         words = data['words']
         random.shuffle(words)
-        rand_words = words[:10]
+        rand_words = words[:50]
         return ' '.join(rand_words)
 
 

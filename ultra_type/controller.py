@@ -4,6 +4,7 @@ from ultra_type.view import View
 from ultra_type.languages.language import English, Hebrew
 from ultra_type.practices.practice import PracticeWeakLetters, PracticeRandom, PracticeWeakWords
 from ultra_type.practice_controller import PracticeController
+from ultra_type.view_practice import ViewPractice
 
 class Controller:
     def __init__(self, model: Model, view: View):
@@ -15,7 +16,12 @@ class Controller:
         while (True):
             action = self.view.get_main_menu_selection()
             if action == '1':
-                PracticeController(self.model, self.view).run()
+                view_practice = ViewPractice(
+                    self.view.stdscr,
+                    self.view.screen_width,
+                    self.view.screen_height,
+                    self.model.language.is_ltr())
+                PracticeController(self.model, view_practice).run()
             elif action == '2':
                 self._stats_menu()
             elif action == '3':
