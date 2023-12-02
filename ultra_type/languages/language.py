@@ -26,7 +26,7 @@ class English(Language):
         return english_char
 
     def get_words_filename(self):
-        return "ultra_type/english_common_words.json"
+        return "ultra_type/data/english_common_words.json"
 
 
 class Hebrew(Language):
@@ -44,4 +44,4 @@ class Hebrew(Language):
         return self.hebrew_keyboard_mapping.get(english_char)
 
     def get_words_filename(self):
-        return "ultra_type/hebrew_common_words.json"
+        return "ultra_type/data/hebrew_common_words.json"

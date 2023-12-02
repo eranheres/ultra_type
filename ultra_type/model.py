@@ -50,16 +50,20 @@ class Model:
     def save_setting(self):
         settings = {
             "language": self.language.__class__.__name__,
-            "practice": self.practice.__class__.__name__
+            "practice": self.practice.__class__.__name__,
+            "practice_attributes": self.practice.attributes
         }
         self.database.save_settings(settings)
 
     def load_setting(self):
         settings = self.database.load_settings({
             "language": "English",
-            "practice": "PracticeRandom"
+            "practice": "PracticeRandom",
+            "practice_attributes": {}
         })
         module = importlib.import_module("ultra_type.languages.language")
         self.language = getattr(module, settings["language"])()
         module = importlib.import_module("ultra_type.practices.practice")
         self.practice = getattr(module, settings["practice"])()
+        if "practice_attributes" in settings:
+            self.practice.attributes = settings["practice_attributes"]

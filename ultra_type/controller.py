@@ -1,8 +1,8 @@
-
+import json
 from ultra_type.model import Model
 from ultra_type.view import View
 from ultra_type.languages.language import English, Hebrew
-from ultra_type.practices.practice import PracticeWeakLetters, PracticeRandom, PracticeWeakWords
+from ultra_type.practices.practice import PracticeWeakLetters, PracticeRandom, PracticeWeakWords, PracticeLesson
 from ultra_type.practice_controller import PracticeController
 from ultra_type.view_practice import ViewPractice
 
@@ -48,11 +48,25 @@ class Controller:
             elif choice == '3':
                 break
     def _change_practice(self):
-        self.model.practice = self.view.get_practice_selection([
+        practices = [
             PracticeRandom(),
             PracticeWeakWords(),
             PracticeWeakLetters()
-        ])
+        ]
+        # load lessons from json file
+        with open('ultra_type/data/lessons/dictionary.json') as f:
+            data = json.load(f)
+        lessons = data['lessons']
+        for lesson in lessons:
+            if self.model.language.name != lesson["language"]:
+                continue
+            practice_lesson = PracticeLesson()
+            practice_lesson.attributes = lesson
+            practices.append(practice_lesson)
+        selection = int(self.view.get_practice_selection(practices))
+        if selection >= len(practices):
+            return
+        self.model.practice = practices[selection]
 
     def _change_lang(self):
         action = self.view.show_language_menu()

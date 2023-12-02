@@ -1,0 +1,14 @@
+{
+  "lessons": [
+    {
+      "language": "English",
+      "title": "Lesson 1",
+      "filename": "lesson1.txt"
+    },
+    {
+      "language": "English",
+      "title": "Lesson 2",
+      "filename": "lesson2.txt"
+    }
+  ]
+}

@@ -28,7 +28,9 @@
 - [x] Save the practice id in the database
 - [x] Show practices stats
 - [x] Fix screen overlap crash
-- [ ] Support practice that user brings his own text
+- [X] Support practice that user brings his own text 
+- [ ] Dont count errors twice in the same place
+- [ ] Dont count timing on a new page
 - [ ] Support weak words practices
 - [ ] Show settings in the view
 - [ ] Center the text and the practice in the view
