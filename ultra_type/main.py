@@ -10,5 +10,9 @@ def main():
     controller.run()
 
 if __name__ == "__main__":
-    print("Welcome to Ultra Type!")
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(e)
+        print("Error: UltraType has crashed")
+        exit(1)

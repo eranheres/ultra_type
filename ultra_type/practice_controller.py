@@ -50,6 +50,9 @@ class PracticeController:
                     user_input=user_input,
                     time=char_time)
             started = True
+            # if escape key pressed
+            if mapped_char == '\x1b':
+                break
             if str(mapped_char) != str(practice_str[self._pos]):
                 if not prev_had_error:
                     self._err_cnt += 1

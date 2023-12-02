@@ -4,20 +4,14 @@ from ultra_type.curses_mock import CursesMock
 
 class View:
     def __init__(self):
-        self.screen_width = 20
-        self.screen_height = 6
-        try:
-            self.stdscr = curses.initscr()
-            self.curses_available = True
-            curses.noecho()
-            curses.cbreak()
-        except:
-            self.curses_available = False
-            self.stdscr = CursesMock()
+        self.stdscr = curses.initscr()
+        self.screen_height, self.screen_width = self.stdscr.getmaxyx()
+
+        curses.noecho()
+        curses.cbreak()
 
     def __del__(self):
-        if self.curses_available:
-            curses.endwin()
+        curses.endwin()
 
     def _display_menu(self, options: []):
         self.stdscr.clear()

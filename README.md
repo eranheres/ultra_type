@@ -31,8 +31,9 @@
 - [x] Support practice that user brings his own text 
 - [x] Dont count errors twice in the same place
 - [x] Support weak words practices
+- [x] Exit practice with esc
 - [ ] Support weak letters practices
 - [ ] Show settings in the view
-- [ ] Center the text and the practice in the view
+- [x] Center the text and the practice in the view
 - [ ] Show screen rectangle in the view
 - [ ] Dont count timing on a new page

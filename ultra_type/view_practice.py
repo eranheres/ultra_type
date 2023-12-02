@@ -1,8 +1,8 @@
 class ViewPractice:
 
     def __init__(self, stdscr, win_width: int, win_height: int, is_ltr: bool):
-        self._max_width = win_width
-        self._max_height = win_height
+        self._max_width = win_width - 40
+        self._max_height = win_height - 5
         self._stdscr = stdscr
         self._is_ltr = is_ltr
         self._current_page = -1
@@ -54,7 +54,7 @@ class ViewPractice:
             if len(current_line) + len(word) + 1 > self._max_width:
                 current_line += " "
                 lines.append(current_line)
-                if len(lines) == self._max_height:
+                if len(lines) == self._max_height/2:
                     pages.append(lines)
                     lines = []
                 current_line = word
@@ -95,13 +95,14 @@ class ViewPractice:
         self._stdscr.refresh()
 
     def show_rt_practice_stats(self, word_cnt: int, wpm: int, accuracy: int, pos: int, last_char, errors):
-        self._display_str_at(0, 50, f"Word count: {word_cnt}\n")
-        self._display_str_at(1, 50, f"WPM: {wpm}\n")
-        self._display_str_at(2, 50, f"Accuracy: {accuracy}%\n")
-        self._display_str_at(3, 50, f"-----------------\n")
-        self._display_str_at(4, 50, f"Pos: {pos}\n")
-        self._display_str_at(5, 50, f"Page: {self._current_page}\n")
-        self._display_str_at(6, 50, f"Expected: {self._practice_text[pos]}\n")
-        self._display_str_at(7, 50, f"Last Typed: {last_char}\n")
-        self._display_str_at(8, 50, f"Errors: {errors}\n")
+        x = self._max_width + 5
+        self._display_str_at(0, x, f"Word count: {word_cnt}\n")
+        self._display_str_at(1, x, f"WPM: {wpm}\n")
+        self._display_str_at(2, x, f"Accuracy: {accuracy}%\n")
+        self._display_str_at(3, x, f"-----------------\n")
+        self._display_str_at(4, x, f"Pos: {pos}\n")
+        self._display_str_at(5, x, f"Page: {self._current_page}\n")
+        self._display_str_at(6, x, f"Expected: {self._practice_text[pos]}\n")
+        self._display_str_at(7, x, f"Last Typed: {last_char}\n")
+        self._display_str_at(8, x, f"Errors: {errors}\n")
         self._stdscr.refresh()
