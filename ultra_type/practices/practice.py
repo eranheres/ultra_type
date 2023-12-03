@@ -67,10 +67,10 @@ class PracticeWeakWords(Practice):
         super().__init__("Practice weak words")
 
     def generate_practice(self, model: Model):
-        data = model.statistics.process_word_data()
-        truncated_data = data[0:40]
-        random.shuffle(truncated_data)
-        return " ".join([record["word"] for record in truncated_data])
+        word_data = model.statistics.word_data()
+        weights = [record["avg_error_rate"]+record["average_wpm"] for record in word_data]
+        words_list = [record["word"] for record in random.choices(word_data, weights=weights, k=40)]
+        return " ".join([record["word"] for record in words_list])
 
 
 class PracticeWeakLetters(Practice):
@@ -78,4 +78,19 @@ class PracticeWeakLetters(Practice):
         super().__init__("Practice weak letters")
 
     def generate_practice(self, model: Model):
-        return "Practice weak letters"
+        word_data = model.statistics.word_data()
+        letters_raw = model.statistics.letters_data()
+        letters = []
+        for record in letters_raw:
+            if record["char"] not in [" ", "\n", ".", "?", "!", ",", ";", ":", "-", "(", ")", "[", "]", "{", "}"]:
+                letters.append(record)
+        words_per_letter = {}
+        for letter in letters:
+            words_per_letter[letter["char"]] = [record["word"] for record in word_data if letter["char"] in record["word"]]
+            if len(words_per_letter[letter["char"]]) == 0:
+                Exception(f"no words for letter '{letter}'")
+        weights = [record["avg_error_rate"]+record["average_wpm"] for record in letters]
+        letters_to_practice = random.choices(letters, weights=weights, k=60)
+        # for each letter in letters_to_practice, choose a random word from words_per_letter
+        words_to_practice = [random.choice(words_per_letter[letter["char"]]) for letter in letters_to_practice]
+        return " ".join(words_to_practice)
