@@ -48,10 +48,11 @@ class Model:
         self.database.save_stats(self.statistics.get_stats())
 
     def save_setting(self):
+        attr = {} if hasattr(self.practice, "attributes") is False else self.practice.attributes
         settings = {
             "language": self.language.__class__.__name__,
             "practice": self.practice.__class__.__name__,
-            "practice_attributes": self.practice.attributes
+            "practice_attributes": attr
         }
         self.database.save_settings(settings)
 

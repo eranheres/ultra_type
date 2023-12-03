@@ -9,6 +9,11 @@
       "language": "English",
       "title": "Lesson 2",
       "filename": "lesson2.txt"
+    },
+    {
+      "language": "Hebrew",
+      "title": "Margaret Thatcher",
+      "filename": "margaret.txt"
     }
   ]
 }

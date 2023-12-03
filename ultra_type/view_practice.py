@@ -27,7 +27,7 @@ class ViewPractice:
         page, line, col = self._get_pos_of_practice(pos)
         y = (line % self._max_height) * 2 + 1
         if not self._is_ltr:
-            x = self._max_width - col - 1
+            x = self._max_width - col
         else:
             x = col
         return x, y
@@ -80,7 +80,7 @@ class ViewPractice:
         for line_txt in self._pages[self._current_page]:
             if not self._is_ltr:
                 printed_text = line_txt[::-1]
-                pos = self._max_width - len(line_txt)
+                pos = self._max_width - len(line_txt) + 1
             else:
                 printed_text = line_txt
                 pos = 0
