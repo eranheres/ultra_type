@@ -1,0 +1,134 @@
+{
+  "records": [
+    {
+      "input_time": "2023-12-03 13:53:38",
+      "practice_name": "PracticeRandom",
+      "practice_guid": "ab6f6d52-5dd2-4c5b-a115-721b8a0e304b",
+      "language": "Hebrew",
+      "word": "לומר",
+      "char": "ו",
+      "user_input": "ו",
+      "time": 1.4984270420391113
+    },
+    {
+      "input_time": "2023-12-03 13:53:38",
+      "practice_name": "PracticeRandom",
+      "practice_guid": "ab6f6d52-5dd2-4c5b-a115-721b8a0e304b",
+      "language": "Hebrew",
+      "word": "לומר",
+      "char": "מ",
+      "user_input": "מ",
+      "time": 0.2564055409748107
+    },
+    {
+      "input_time": "2023-12-03 13:53:39",
+      "practice_name": "PracticeRandom",
+      "practice_guid": "ab6f6d52-5dd2-4c5b-a115-721b8a0e304b",
+      "language": "Hebrew",
+      "word": "לומר",
+      "char": "ר",
+      "user_input": "ר",
+      "time": 0.07548529212363064
+    },
+    {
+      "input_time": "2023-12-03 13:53:39",
+      "practice_name": "PracticeRandom",
+      "practice_guid": "ab6f6d52-5dd2-4c5b-a115-721b8a0e304b",
+      "language": "Hebrew",
+      "word": "לומר",
+      "char": " ",
+      "user_input": " ",
+      "time": 0.2948233331553638
+    },
+    {
+      "input_time": "2023-12-03 13:53:39",
+      "practice_name": "PracticeRandom",
+      "practice_guid": "ab6f6d52-5dd2-4c5b-a115-721b8a0e304b",
+      "language": "Hebrew",
+      "word": "לעולם",
+      "char": "ל",
+      "user_input": "ל",
+      "time": 0.0018678330816328526
+    },
+    {
+      "input_time": "2023-12-03 13:53:39",
+      "practice_name": "PracticeRandom",
+      "practice_guid": "ab6f6d52-5dd2-4c5b-a115-721b8a0e304b",
+      "language": "Hebrew",
+      "word": "לעולם",
+      "char": "ע",
+      "user_input": "ע",
+      "time": 0.414762708125636
+    },
+    {
+      "input_time": "2023-12-03 13:53:39",
+      "practice_name": "PracticeRandom",
+      "practice_guid": "ab6f6d52-5dd2-4c5b-a115-721b8a0e304b",
+      "language": "Hebrew",
+      "word": "לעולם",
+      "char": "ו",
+      "user_input": "ו",
+      "time": 0.12308512511663139
+    },
+    {
+      "input_time": "2023-12-03 13:53:40",
+      "practice_name": "PracticeRandom",
+      "practice_guid": "ab6f6d52-5dd2-4c5b-a115-721b8a0e304b",
+      "language": "Hebrew",
+      "word": "לעולם",
+      "char": "ל",
+      "user_input": "ל",
+      "time": 0.21448245900683105
+    },
+    {
+      "input_time": "2023-12-03 13:53:40",
+      "practice_name": "PracticeRandom",
+      "practice_guid": "ab6f6d52-5dd2-4c5b-a115-721b8a0e304b",
+      "language": "Hebrew",
+      "word": "לעולם",
+      "char": "ם",
+      "user_input": "ם",
+      "time": 0.270485500106588
+    },
+    {
+      "input_time": "2023-12-03 13:53:40",
+      "practice_name": "PracticeRandom",
+      "practice_guid": "ab6f6d52-5dd2-4c5b-a115-721b8a0e304b",
+      "language": "Hebrew",
+      "word": "לעולם",
+      "char": " ",
+      "user_input": " ",
+      "time": 0.3282514591701329
+    },
+    {
+      "input_time": "2023-12-03 13:53:40",
+      "practice_name": "PracticeRandom",
+      "practice_guid": "ab6f6d52-5dd2-4c5b-a115-721b8a0e304b",
+      "language": "Hebrew",
+      "word": "לא",
+      "char": "ל",
+      "user_input": "ל",
+      "time": 0.07817854196764529
+    },
+    {
+      "input_time": "2023-12-03 13:53:41",
+      "practice_name": "PracticeRandom",
+      "practice_guid": "ab6f6d52-5dd2-4c5b-a115-721b8a0e304b",
+      "language": "Hebrew",
+      "word": "לא",
+      "char": "א",
+      "user_input": "א",
+      "time": 0.9894400830380619
+    },
+    {
+      "input_time": "2023-12-03 13:53:42",
+      "practice_name": "PracticeRandom",
+      "practice_guid": "ab6f6d52-5dd2-4c5b-a115-721b8a0e304b",
+      "language": "Hebrew",
+      "word": "לא",
+      "char": " ",
+      "user_input": None,
+      "time": 1.0944887499790639
+    }
+  ]
+}

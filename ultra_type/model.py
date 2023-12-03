@@ -31,7 +31,7 @@ class Model:
     def practice(self, practice):
         self._practice = practice
 
-    def update_stats(self, practice_name: str, practice_guid: str, word: str, char: chr, user_input: chr, time: float):
+    def update_stats(self, practice_name: str, practice_guid: str, word: str, char: str, user_input: str, time: float):
         # generate guid
         self._statistics.update({
             "input_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),

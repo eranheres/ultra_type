@@ -10,7 +10,7 @@ class Language:
     def is_ltr(self):
         return self._direction_ltr
 
-    def map_keyboard_layout(self, english_char : chr):
+    def map_keyboard_layout(self, english_key: str):
         assert NotImplementedError("This method must be implemented by the derived class")
 
     def get_words_filename(self):
@@ -22,7 +22,7 @@ class English(Language):
     def __init__(self):
         super().__init__(name="English", direction_ltr=True)
 
-    def map_keyboard_layout(self, english_char : chr):
+    def map_keyboard_layout(self, english_char : str):
         return english_char
 
     def get_words_filename(self):
@@ -39,7 +39,7 @@ class Hebrew(Language):
             'z': 'ז', 'x': 'ס', 'c': 'ב', 'v': 'ה', 'b': 'נ', 'n': 'מ', 'm': 'צ', ',': 'ת', '.': 'ץ', ' ': ' '
         }
 
-    def map_keyboard_layout(self, english_char : chr):
+    def map_keyboard_layout(self, english_char : str):
         # Convert the character if it's in the mapping, otherwise return it as is
         return self.hebrew_keyboard_mapping.get(english_char)
 

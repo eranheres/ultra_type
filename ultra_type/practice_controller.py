@@ -37,7 +37,9 @@ class PracticeController:
         while True:
             self._view.refresh_display(self._pos)
             start = time.perf_counter()
-            user_input = self._view.get_user_char(self._pos)
+            user_input = self._view.get_user_key(self._pos)
+            if user_input == '\x1b':
+                break
             char_time = time.perf_counter() - start
             mapped_char = self._model.language.map_keyboard_layout(user_input)
             self._show_stats(mapped_char)
@@ -47,12 +49,9 @@ class PracticeController:
                     practice_guid=practice_guid,
                     word=practice_str.split(' ')[self._word_cnt],
                     char=practice_str[self._pos],
-                    user_input=user_input,
+                    user_input=mapped_char,
                     time=char_time)
             started = True
-            # if escape key pressed
-            if mapped_char == '\x1b':
-                break
             if str(mapped_char) != str(practice_str[self._pos]):
                 if not prev_had_error:
                     self._err_cnt += 1

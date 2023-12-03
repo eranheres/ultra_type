@@ -21,13 +21,13 @@ class Statistics:
     def get_stats(self):
         return self.stats
 
-    def process_word_data(self):
+    def word_data(self):
         # Convert the list of dictionaries into a pandas DataFrame
         df = pd.DataFrame(self.stats)
 
         # Convert 'input_time' to datetime and 'time' to minutes
         df['input_time'] = pd.to_datetime(df['input_time'])
-        df['time'] = df['time'] / 1e6 / 60  # Convert microseconds to minutes
+        df['time'] = df['time'] / 60  # Convert seconds to minutes
 
         # Calculate WPM for each entry (assuming 5 characters per word)
         df['wpm'] = df['user_input'].apply(len) / (df['time'] * 5)
@@ -48,26 +48,40 @@ class Statistics:
         sorted_word_stats = word_stats.sort_values(by=['avg_error_rate','average_wpm'], ascending=[False,True])
         return sorted_word_stats.to_dict('records')
 
-    def get_char_times(self, language: str):
-        char_times = {}
-        for entry in self.stats:
-            if entry['language'] != language:
-                continue
-            char = entry['char']
-            time = entry['time']
-            if char in char_times:
-                char_times[char]['total'] += time
-                char_times[char]['count'] += 1
-            else:
-                char_times[char] = {'total': time, 'count': 1}
-        return char_times
+    def letters_data(self):
+        # Convert the list of dictionaries into a pandas DataFrame
+        df = pd.DataFrame(self.stats)
+        if df.empty:
+            return {"records": []}
 
-    def get_prtactices_data(self):
+        # Convert 'input_time' to datetime and 'time' to minutes
+        df['input_time'] = pd.to_datetime(df['input_time'])
+
+        # Calculate WPM for each entry (assuming 5 characters per word)
+        df['wpm'] = 1 / (df['time'] * 5) / 60
+
+        # Calculate error rate for each entry
+        df['errors'] = df.apply(lambda x: sum(a != b for a, b in zip(x['user_input'], x['char'])), axis=1)
+        df['error_rate'] = df['errors'] / df['user_input'].apply(len)
+
+        # Group by word and calculate average WPM, error rate, and count
+        word_stats = df.groupby('char').agg({
+            'wpm': 'mean',
+            'error_rate': 'mean',
+            'char': 'count'
+        }).rename(columns={'char': 'count'}).reset_index()
+
+        # Rename columns for clarity
+        word_stats.columns = ['char', 'average_wpm', 'avg_error_rate', 'count']
+        sorted_word_stats = word_stats.sort_values(by=['avg_error_rate','average_wpm'], ascending=[False,True])
+        return sorted_word_stats.to_dict('records')
+
+    def prtactices_data(self):
         df = pd.DataFrame(self.stats)
 
         # Convert 'input_time' to datetime and 'time' to seconds
         df['input_time'] = pd.to_datetime(df['input_time'])
-        df['time'] = df['time']  # Convert microseconds to seconds
+        df['time'] = df['time'] / 60 # Convert microseconds to seconds
 
         # Calculate the duration and start time for each practice
         practice_times = df.groupby('practice_guid').agg({

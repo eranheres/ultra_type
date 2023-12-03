@@ -36,19 +36,19 @@ class Controller:
                 exit(0)
 
     def _stats_menu(self):
+        stats = []
         while True:
             choice = self.view.show_stats_menu()
             if choice == '1':
-                practice_data = self.model.statistics.get_prtactices_data()
-                self.view.show_stats_from_structure(practice_data)
+                stats = self.model.statistics.prtactices_data()
             elif choice == '2':
-                char_times = self.model.statistics.get_char_times(self.model.language.name)
-                self.view.show_letters_stats(char_times)
+                stats = self.model.statistics.letters_data()
             elif choice == '3':
-                word_stats = self.model.statistics.process_word_data()
-                self.view.show_stats_from_structure(word_stats)
+                stats = self.model.statistics.word_data()
             elif choice == '4':
                 break
+            self.view.show_stats_from_structure(stats)
+
     def _change_practice(self):
         practices = [
             PracticeRandom(),

@@ -1,6 +1,6 @@
 import curses
 import pandas as pd
-from ultra_type.curses_mock import CursesMock
+from tabulate import tabulate
 
 class View:
     def __init__(self):
@@ -22,7 +22,7 @@ class View:
         while (True):
             try:
                 key = self.get_user_key()
-                if key == '\x1b' or key == chr(27):
+                if key in ["\x1b"]:
                     return len(options) + 1
                 if int(key) <= len(options) + 1:
                     return key
@@ -51,47 +51,44 @@ class View:
             "Words statistics"])
 
     def show_stats_from_structure(self, stats: []):
-        trimed_stats = stats[0:10]
-        df = pd.DataFrame(trimed_stats)
-        tbl = df.to_string(index=False)
-        self.display_text(tbl)
-        self.get_user_key()
+        df = pd.DataFrame(stats)
+        txt = str(tabulate(df, headers=df.columns,tablefmt='github'))
+        self.display_full_screen_text(txt)
 
-    def get_user_key(self):
+    def get_user_key(self) -> str:
         # start a timer
-        return chr(self.stdscr.getch())
+        return self.stdscr.getkey()
 
     def display_str_at(self, y: int, x: int, text: str):
         self.stdscr.move(y, x)
         self.stdscr.addstr(text)
         self.stdscr.refresh()
 
-    def get_user_text(self):
-        # use curses to get user input character by character
-        self.stdscr.keypad(True)
-        user_input = ''
+    def display_full_screen_text(self, text: str):
+        lines = text.split('\n')
+        # segment lines to pages of max_height size
+        lines = [line.ljust(self.screen_width-1) for line in lines]
+        pages = ["\n".join(lines[i:i + self.screen_height-1]) for i in range(0, len(lines), self.screen_height-1)]
+
+        page_num = 0
         while True:
-            c = chr(self.stdscr.getch())
-            if c == '\n':
+            self.stdscr.clear()
+            self.stdscr.addstr(pages[page_num])
+            self.stdscr.refresh()
+            key = self.get_user_key()
+            if key in ["\x1b", curses.KEY_ENTER]:
                 break
-            # echo the character back to the screen
-            self.stdscr.addstr(str(c))
-            user_input += c
-
-        return user_input
-
-    def display_text(self, word: str):
-        self.stdscr.clear()
-        self.stdscr.addstr(word)
-        self.stdscr.refresh()
+            if (key in [curses.KEY_UP, 'k']) and page_num > 0:
+                page_num -= 1
+            if (key in [curses.KEY_DOWN, 'j']) and page_num < len(pages) - 1:
+                page_num += 1
 
     def show_letters_stats(self, char_times: {}):
         str = "Average Time per Character:\n"
         for char, info in char_times.items():
             average = info['total'] / info['count']
             str += f"Character '{char}': {average} sec\n"
-        self.display_text(str)
-        self.get_user_key()
+        self.display_full_screen_text(str)
 
     def get_practice_selection(self, practices: []):
         return self._display_menu([practice.description for practice in practices])

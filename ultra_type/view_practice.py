@@ -39,10 +39,10 @@ class ViewPractice:
         self._stdscr.refresh()
 
     # Gets a key stroke from the user at a specific position and return it and return the time it took to type it
-    def get_user_char(self, pos: int):
+    def get_user_key(self, pos: int) -> str:
         x, y = self._get_x_y_of_practice(pos)
         self._stdscr.move(y, x)
-        return chr(self._stdscr.getch())
+        return self._stdscr.getkey()
 
     def _paginate_text(self, text):
         words = text.split()
