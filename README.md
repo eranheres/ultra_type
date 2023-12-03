@@ -16,8 +16,9 @@
 - [x] Dont count errors twice in the same place
 - [x] Support weak words practices
 - [x] Exit practice with esc
-- [ ] Support weak letters practices
-- [ ] Show settings in the view
+- [x] Support weak letters practices
+- [x] Show settings in the view
+- [ ] Database to load only relevant languages data
 - [ ] Database to save practices list on a seperate table
 - [x] Center the text and the practice in the view
 - [ ] Show screen rectangle in the view

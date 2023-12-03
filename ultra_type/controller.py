@@ -13,7 +13,7 @@ class Controller:
 
     def run(self):
         while (True):
-            action = self.view.get_main_menu_selection()
+            action = self.view.get_main_menu_selection(self.model.language.name, self.model.practice.description)
             if action == '1':
                 view_practice = ViewPractice(
                     self.view.stdscr,

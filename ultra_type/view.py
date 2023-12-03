@@ -14,8 +14,10 @@ class View:
     def __del__(self):
         curses.endwin()
 
-    def _display_menu(self, options: []):
+    def _display_menu(self, header: str, options: []):
         self.stdscr.clear()
+        self.stdscr.addstr(header+"\n")
+        self.stdscr.addstr("-" * (len(header) + 1) + "\n")
         for i, option in enumerate(options):
             self.stdscr.addstr(f"{i+1}. {option}\n")
         self.stdscr.addstr(f"{len(options)+1}. Exit\n")
@@ -28,12 +30,13 @@ class View:
                 if int(key) <= len(options) + 1:
                     return key
                 # check if key is escape
-                self.display_str_at(7,0,f"Invalid choice, please try again.{int(key)}")
+                self.display_str_at(7, 0, f"Invalid choice, please try again.{int(key)}")
             except ValueError:
                 pass
 
-    def get_main_menu_selection(self):
-        return self._display_menu([
+    def get_main_menu_selection(self, language: str, practice: str):
+        header = f"Main Menu     (Language:{language}, Practice:{practice})"
+        return self._display_menu(header=header, options=[
             "Practice",
             "Show Stats",
             "Change Language",
@@ -41,19 +44,19 @@ class View:
             "Save settings"])
 
     def show_language_menu(self):
-        return self._display_menu([
+        return self._display_menu(header="Choose language:", options=[
             "English",
             "Hebrew"])
 
     def show_stats_menu(self):
-        return self._display_menu([
+        return self._display_menu(header="Choose statistics type:", options=[
             "Practice statistics",
             "Letters speed statistics",
             "Words statistics"])
 
     def show_stats_from_structure(self, stats: []):
         df = pd.DataFrame(stats)
-        txt = str(tabulate(df, headers=df.columns,tablefmt='github'))
+        txt = str(tabulate(df, headers=df.columns, tablefmt='github'))
         self.display_full_screen_text(txt)
 
     def get_user_key(self) -> str:
@@ -92,10 +95,6 @@ class View:
         self.display_full_screen_text(str)
 
     def get_practice_selection(self, practices: []):
-        return self._display_menu([practice.description for practice in practices])
-
-# run if main
-if __name__ == '__main__':
-    view = View()
-    word = view.get_user_input()
-    view.display_word('got: ' + word)
+        return self._display_menu(
+            header="Choose practice:",
+            options=[practice.description for practice in practices])
