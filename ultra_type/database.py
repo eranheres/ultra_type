@@ -58,10 +58,10 @@ class Database:
         conn.commit()
         conn.close()
 
-    def load_stats(self):
+    def load_stats(self, language: str):
         conn = sqlite3.connect(self.db_name)
         c = conn.cursor()
-        c.execute("SELECT * FROM stats")
+        c.execute("SELECT * FROM stats WHERE language = :language", {"language": language})
         stats = c.fetchall()
         conn.close()
         return [self._db_recors_to_fields(stat) for stat in stats]

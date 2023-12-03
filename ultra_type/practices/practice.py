@@ -68,9 +68,11 @@ class PracticeWeakWords(Practice):
 
     def generate_practice(self, model: Model):
         word_data = model.statistics.word_data()
+        if len(word_data) == 0:
+            return "."
         weights = [record["avg_error_rate"]+record["average_wpm"] for record in word_data]
         words_list = [record["word"] for record in random.choices(word_data, weights=weights, k=40)]
-        return " ".join([record["word"] for record in words_list])
+        return " ".join([record for record in words_list])
 
 
 class PracticeWeakLetters(Practice):
@@ -79,6 +81,8 @@ class PracticeWeakLetters(Practice):
 
     def generate_practice(self, model: Model):
         word_data = model.statistics.word_data()
+        if len(word_data) == 0:
+            return "."
         letters_raw = model.statistics.letters_data()
         letters = []
         for record in letters_raw:

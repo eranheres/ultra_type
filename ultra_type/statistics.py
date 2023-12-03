@@ -22,6 +22,8 @@ class Statistics:
         return self.stats
 
     def word_data(self):
+        if len(self.stats) == 0:
+            return []
         # Convert the list of dictionaries into a pandas DataFrame
         df = pd.DataFrame(self.stats)
 
@@ -49,6 +51,8 @@ class Statistics:
         return sorted_word_stats.to_dict('records')
 
     def letters_data(self):
+        if len(self.stats) == 0:
+            return []
         # Convert the list of dictionaries into a pandas DataFrame
         df = pd.DataFrame(self.stats)
         if df.empty:
@@ -77,6 +81,8 @@ class Statistics:
         return sorted_word_stats.to_dict('records')
 
     def prtactices_data(self):
+        if len(self.stats) == 0:
+            return {"records": []}
         df = pd.DataFrame(self.stats)
 
         # Convert 'input_time' to datetime and 'time' to seconds

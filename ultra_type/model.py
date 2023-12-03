@@ -8,7 +8,6 @@ class Model:
 
     def __init__(self):
         self.database = Database(db_name="ultra_type.db", stats_fields=Statistics.FIELD_STRACTURE)
-        self._statistics = Statistics(self.database.load_stats())
         self.load_setting()
 
     @property
@@ -22,6 +21,7 @@ class Model:
     @language.setter
     def language(self, lang: Language):
         self._language = lang
+        self._statistics = Statistics(self.database.load_stats(self.language.name))
 
     @property
     def practice(self):
