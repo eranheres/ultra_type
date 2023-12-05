@@ -66,7 +66,7 @@ class Controller:
             practice_lesson.attributes = lesson
             practices.append(practice_lesson)
         selection = int(self.view.get_practice_selection(practices))
-        if selection >= len(practices):
+        if selection > len(practices):
             return
         self.model.practice = practices[selection-1]
 

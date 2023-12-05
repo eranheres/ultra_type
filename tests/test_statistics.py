@@ -26,9 +26,9 @@ class TestStatisticsGetPracticesStats(unittest.TestCase):
                 "practice_name": "practice1",
                 "practice_guid": "1234",
                 "word": "hello",
-                "char": "ר",
-                "user_input": "ר",
-                "time": 0.1,
+                "char": "o",
+                "user_input": "r",
+                "time": 2,
             },
             {
                 "input_time": "2021-01-01 00:00:01",
@@ -37,7 +37,7 @@ class TestStatisticsGetPracticesStats(unittest.TestCase):
                 "word": "hello",
                 "char": "e",
                 "user_input": "e",
-                "time": 0.2,
+                "time": 1,
             },
             {
                 "input_time": "2021-01-01 00:00:02",
@@ -99,6 +99,14 @@ class TestStatisticsGetPracticesStats(unittest.TestCase):
         txt = str(tabulate(df, headers=df.columns,tablefmt='github'))
         print("\n"+txt)
 
+    def test_process_word_data_2(self):
+        statistics = Statistics(self.data)
+        practice_stats = statistics.word_data()
+
+        df = pd.DataFrame(practice_stats)
+        print("\n\n\n")
+        txt = str(tabulate(df, headers=df.columns,tablefmt='github'))
+        print(txt)
 
 if __name__ == '__main__':
     unittest.main()

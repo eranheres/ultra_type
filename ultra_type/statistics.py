@@ -25,6 +25,29 @@ class Statistics:
         if len(self.stats) == 0:
             return []
         # Convert the list of dictionaries into a pandas DataFrame
+        df_errors = pd.DataFrame(self.stats)
+        df_errors['errors'] = df_errors.apply(lambda x: sum(a != b for a, b in zip(x['user_input'], x['char'])), axis=1)
+        df_errors = df_errors.groupby('word').agg({
+            'word': 'count',
+            'errors': 'sum'
+        }).rename(columns={'word': 'count'}).reset_index()
+        df_errors['avg_error_rate'] = df_errors['errors'] / df_errors['count']
+
+        df_wpm = pd.DataFrame(self.stats)
+        df_wpm['wpm'] = 1 / ((df_wpm['time']/60) * 5)
+        df_wpm = df_wpm.groupby('word').agg({
+            'wpm': 'mean',
+        }).rename(columns={'word': 'count'}).reset_index()
+
+        df = pd.merge(df_errors, df_wpm, on='word')
+        df.columns = ['word', 'count', 'error_count', 'error_rate', 'wpm']
+        sorted_word_stats = df.sort_values(by=['wpm', 'error_rate'], ascending=[True, False])
+        return sorted_word_stats.to_dict('records')
+
+    def word_data_old(self):
+        if len(self.stats) == 0:
+            return []
+        # Convert the list of dictionaries into a pandas DataFrame
         df = pd.DataFrame(self.stats)
 
         # Convert 'input_time' to datetime and 'time' to minutes
@@ -44,7 +67,7 @@ class Statistics:
             'error_rate': 'mean',
             'word': 'count'
         }).rename(columns={'word': 'count'}).reset_index()
-
+        word_stats['count'] = word_stats['count'] / word_stats['word'].apply(len)
         # Rename columns for clarity
         word_stats.columns = ['word', 'average_wpm', 'avg_error_rate', 'count']
         sorted_word_stats = word_stats.sort_values(by=['avg_error_rate','average_wpm'], ascending=[False,True])
@@ -97,8 +120,6 @@ class Statistics:
         practice_times['duration'] = (practice_times['end_time'] - practice_times[
             'start_time']).dt.total_seconds() / 60  # Duration in minutes
 
-        print(practice_times)
-
         # Calculate character count and accuracy for each practice
         df['char_count'] = df['user_input'].apply(len)
         df['correct_chars'] = df.apply(lambda x: sum(a == b for a, b in zip(x['user_input'], x['char'])), axis=1)
@@ -111,4 +132,5 @@ class Statistics:
         result['wpm'] = result['char_count'] / (result['duration'] * 5)  # Assuming 5 characters per word
         result['accuracy'] = result['correct_chars'] / result['char_count'] * 100
 
-        return result[['practice_guid', 'start_time', 'char_count', 'wpm', 'accuracy']].to_dict('records')
+        return result[['start_time', 'char_count', 'wpm', 'accuracy']].\
+                            sort_values(by='start_time', ascending=False).to_dict('records')

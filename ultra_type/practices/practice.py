@@ -60,6 +60,7 @@ class PracticeLesson(Practice):
         # read text file from filename and path ultra_type/data/lessons
         with open(f"ultra_type/data/lessons/{filename}") as f:
             data = f.read()
+        data = data.replace("\n", "")
         return data
 
 class PracticeWeakWords(Practice):
@@ -70,7 +71,7 @@ class PracticeWeakWords(Practice):
         word_data = model.statistics.word_data()
         if len(word_data) == 0:
             return "."
-        weights = [record["avg_error_rate"]+record["average_wpm"] for record in word_data]
+        weights = [record["error_rate"]*100+(100-record["wpm"]) for record in word_data]
         words_list = [record["word"] for record in random.choices(word_data, weights=weights, k=40)]
         return " ".join([record for record in words_list])
 
@@ -93,7 +94,7 @@ class PracticeWeakLetters(Practice):
             words_per_letter[letter["char"]] = [record["word"] for record in word_data if letter["char"] in record["word"]]
             if len(words_per_letter[letter["char"]]) == 0:
                 Exception(f"no words for letter '{letter}'")
-        weights = [record["avg_error_rate"]+record["average_wpm"] for record in letters]
+        weights = [record["error_rate"]*100+(100-record["wpm"]) for record in letters]
         letters_to_practice = random.choices(letters, weights=weights, k=60)
         # for each letter in letters_to_practice, choose a random word from words_per_letter
         words_to_practice = [random.choice(words_per_letter[letter["char"]]) for letter in letters_to_practice]

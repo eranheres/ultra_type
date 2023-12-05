@@ -14,7 +14,7 @@ class View:
     def __del__(self):
         curses.endwin()
 
-    def _display_menu(self, header: str, options: []):
+    def _display_menu(self, header: str, options: []) -> str:
         self.stdscr.clear()
         self.stdscr.addstr(header+"\n")
         self.stdscr.addstr("-" * (len(header) + 1) + "\n")
@@ -22,11 +22,11 @@ class View:
             self.stdscr.addstr(f"{i+1}. {option}\n")
         self.stdscr.addstr(f"{len(options)+1}. Exit\n")
         self.stdscr.refresh()
-        while (True):
+        while True:
             try:
                 key = self.get_user_key()
                 if key in ["\x1b"]:
-                    return len(options) + 1
+                    return str(len(options) + 1)
                 if int(key) <= len(options) + 1:
                     return key
                 # check if key is escape
@@ -35,7 +35,7 @@ class View:
                 pass
 
     def get_main_menu_selection(self, language: str, practice: str):
-        header = f"Main Menu     (Language:{language}, Practice:{practice})"
+        header = f"Main Menu     (Language:{language}, Practice:{practice}, dimensions:{self.screen_width}x{self.screen_height})"
         return self._display_menu(header=header, options=[
             "Practice",
             "Show Stats",

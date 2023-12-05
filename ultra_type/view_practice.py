@@ -2,7 +2,7 @@ class ViewPractice:
 
     def __init__(self, stdscr, win_width: int, win_height: int, is_ltr: bool):
         self._max_width = win_width - 40
-        self._max_height = win_height - 5
+        self._max_height = win_height - 10
         self._stdscr = stdscr
         self._is_ltr = is_ltr
         self._current_page = -1
@@ -94,7 +94,7 @@ class ViewPractice:
         self._stdscr.addstr(text)
         self._stdscr.refresh()
 
-    def show_rt_practice_stats(self, word_cnt: int, wpm: int, accuracy: int, pos: int, last_char, errors):
+    def show_rt_practice_stats(self, current_word: str, word_cnt: int, wpm: int, accuracy: int, pos: int, last_char, errors):
         x = self._max_width + 5
         self._display_str_at(0, x, f"Word count: {word_cnt}\n")
         self._display_str_at(1, x, f"WPM: {wpm}\n")
@@ -105,4 +105,5 @@ class ViewPractice:
         self._display_str_at(6, x, f"Expected: {self._practice_text[pos]}\n")
         self._display_str_at(7, x, f"Last Typed: {last_char}\n")
         self._display_str_at(8, x, f"Errors: {errors}\n")
+        self._display_str_at(0, x, f"Current word: {current_word}\n")
         self._stdscr.refresh()

@@ -19,7 +19,9 @@
 - [x] Support weak letters practices
 - [x] Show settings in the view
 - [x] Database to load only relevant languages data
-- [ ] Database to save practices list on a seperate table
 - [x] Center the text and the practice in the view
+- [ ] Fix bug with enter key
 - [ ] Show screen rectangle in the view
-- [ ] Dont count timing on a new page
+- [ ] Don't count timing on a new page
+- [ ] Add sound effects
+- [?] Database to save practices list on a seperate table
