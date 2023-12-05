@@ -17,8 +17,8 @@ class Controller:
             if action == '1':
                 view_practice = ViewPractice(
                     self.view.stdscr,
-                    self.view.screen_width-2,
-                    self.view.screen_height-2,
+                    self.view.screen_width-20,
+                    self.view.screen_height-20,
                     self.model.language.is_ltr())
                 PracticeController(self.model, view_practice).run()
             elif action == '2':
@@ -46,6 +46,8 @@ class Controller:
             elif choice == '3':
                 stats = self.model.statistics.word_data()
             elif choice == '4':
+                stats = self.model.statistics.daily_data()
+            elif choice == '5':
                 break
             self.view.show_stats_from_structure(stats)
 

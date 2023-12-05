@@ -134,3 +134,13 @@ class Statistics:
 
         return result[['start_time', 'char_count', 'wpm', 'accuracy']].\
                             sort_values(by='start_time', ascending=False).to_dict('records')
+
+    def daily_data(self):
+        if len(self.stats) == 0:
+            return {"records": []}
+        df = pd.DataFrame(self.stats)
+
+        df['date'] = df['input_time'].apply(lambda x: x[0:10])
+        df = df.groupby('date').agg({'time': sum})
+        df['time'] = df['time'] / 60
+        return df.sort_values(by='date', ascending=False).to_dict('records')

@@ -1,8 +1,8 @@
 import uuid
 import time
-import curses
 import re
 from ultra_type.view_practice import ViewPractice
+
 
 class PracticeController:
     def __init__(self, model, view: ViewPractice):
@@ -97,12 +97,3 @@ class PracticeController:
             if self._pos >= len(practice_str):
                 break
 
-
-if __name__ == '__main__':
-    stdscr = curses.initscr()
-    curses.noecho()
-    curses.cbreak()
-    from ultra_type.model import Model
-    from ultra_type.view_practice import ViewPractice
-
-    PracticeController(Model(), ViewPractice(stdscr,20,4,True)).run()

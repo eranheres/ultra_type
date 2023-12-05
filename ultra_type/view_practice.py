@@ -1,17 +1,17 @@
 class ViewPractice:
 
     def __init__(self, stdscr, win_width: int, win_height: int, is_ltr: bool):
-        self._max_width = win_width - 40
-        self._max_height = win_height - 10
+        self._max_width = win_width
+        self._max_height = win_height
         self._stdscr = stdscr
         self._is_ltr = is_ltr
         self._current_page = -1
 
     def set_practice_text(self, practice_text: str):
         self._practice_text = practice_text
-        self._pages = self._paginate_text(practice_text)
+        self._pages = self._paginate_text(practice_text, int(self._max_height/2))
 
-    def _get_pos_of_practice(self, pos: int):
+    def _get_pos_of_practice(self, pos: int) -> (int, int, int):
         line_cnt = 0
         page_cnt = 0
         for page in self._pages:
@@ -44,7 +44,7 @@ class ViewPractice:
         self._stdscr.move(y, x)
         return self._stdscr.getkey()
 
-    def _paginate_text(self, text):
+    def _paginate_text(self, text: str, max_height: int):
         words = text.split()
         pages = []
         lines = []
@@ -54,7 +54,7 @@ class ViewPractice:
             if len(current_line) + len(word) + 1 > self._max_width:
                 current_line += " "
                 lines.append(current_line)
-                if len(lines) == self._max_height/2:
+                if len(lines) == max_height:
                     pages.append(lines)
                     lines = []
                 current_line = word

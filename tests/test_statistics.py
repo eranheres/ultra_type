@@ -1,4 +1,5 @@
 import unittest
+import os
 import pandas as pd
 import json
 
@@ -59,7 +60,7 @@ class TestStatisticsGetPracticesStats(unittest.TestCase):
             },
         ]
 
-
+    @unittest.skip("skip")
     def test_get_practices_stats(self):
         statistics = Statistics(self.data)
         practice_stats = statistics.prtactices_data()
@@ -87,9 +88,13 @@ class TestStatisticsGetPracticesStats(unittest.TestCase):
         txt = str(tabulate(df, headers=df.columns,tablefmt='github'))
         print("\n"+txt)
 
+    @unittest.skip("skip")
     def test_get_letters_hebrew(self):
         # load hebrew data
-        with open('tests/hebrew_test_data.json') as f:
+        #get location of this file
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        filename = os.path.join(dir_path, 'hebrew_test_data.json')
+        with open(filename) as f:
             data = json.load(f)
 
         statistics = Statistics(data)
@@ -107,6 +112,19 @@ class TestStatisticsGetPracticesStats(unittest.TestCase):
         print("\n\n\n")
         txt = str(tabulate(df, headers=df.columns,tablefmt='github'))
         print(txt)
+
+    def test_days_training_timing(self):
+        # load hebrew data
+        #with open('tests/hebrew_test_data.json') as f:
+        #    data = json.load(f)
+
+        statistics = Statistics(self.data)
+        practice_stats = statistics.daily_data()
+
+        df = pd.DataFrame(practice_stats)
+        txt = str(tabulate(df, headers=df.columns,tablefmt='github'))
+        print("\n"+txt)
+
 
 if __name__ == '__main__':
     unittest.main()

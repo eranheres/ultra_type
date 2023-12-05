@@ -52,7 +52,8 @@ class View:
         return self._display_menu(header="Choose statistics type:", options=[
             "Practice statistics",
             "Letters speed statistics",
-            "Words statistics"])
+            "Words statistics",
+            "Daily practice time"])
 
     def show_stats_from_structure(self, stats: []):
         df = pd.DataFrame(stats)

@@ -1,4 +1,5 @@
 from ultra_type.database import Database
+import sqlite3
 import time
 
 class TestDatabase:
@@ -7,6 +8,7 @@ class TestDatabase:
     def setup_method(self):
         self.fields = {
             "input_time": "datetime",
+            "language": "text",
             "practice_name": "text",
             "practice_guid": "text",
             "word": "text",
@@ -26,6 +28,7 @@ class TestDatabase:
         stats = [
             {
                 "input_time": "2021-01-01 00:00:00",
+                "language": "English",
                 "practice_name": "practice1",
                 "practice_guid": "1234",
                 "word": "hello",
@@ -35,6 +38,7 @@ class TestDatabase:
             },
             {
                 "input_time": "2021-01-01 00:00:01",
+                "language": "English",
                 "practice_name": "practice2",
                 "practice_guid": "1234",
                 "word": "hello",
@@ -44,6 +48,7 @@ class TestDatabase:
             },
             {
                 "input_time": "2021-01-01 00:00:02",
+                "language": "English",
                 "practice_name": "practice1",
                 "practice_guid": "5678",
                 "word": "hello",
@@ -53,6 +58,7 @@ class TestDatabase:
             },
             {
                 "input_time": "2021-01-01 00:00:03",
+                "language": "English",
                 "practice_name": "pice1",
                 "practice_guid": "5678",
                 "word": "hello",
@@ -62,6 +68,7 @@ class TestDatabase:
             },
             {
                 "input_time": "2021-01-01 00:00:04",
+                "language": "English",
                 "practice_name": "practice1",
                 "practice_guid": "78",
                 "word": "hello",
@@ -71,12 +78,13 @@ class TestDatabase:
             },
         ]
         db.save_stats(stats)
-        loaded_stats = db.load_stats()
+        loaded_stats = db.load_stats(language="English")
         assert loaded_stats == stats
 
     def test_save_stats_missing_field(self):
         stats = [{
             "input_time": "2021-01-01 00:00:00",
+            "language": "text",
             "practice_name": "practice1",
             "practice_guid": "1234",
             "char": "h",
@@ -95,6 +103,7 @@ class TestDatabase:
     def test_save_stats_unknown_field(self):
         stats = [{
             "input_time": "2021-01-01 00:00:00",
+            "language": "text",
             "practice_name": "practice1",
             "practice_guid": "1234",
             "word": "hello",
@@ -115,6 +124,7 @@ class TestDatabase:
     def test_save_stats_valid(self):
         stats = [{
             "input_time": "2021-01-01 00:00:00",
+            "language": "text",
             "practice_name": "practice1",
             "practice_guid": "1234",
             "word": "hello",
@@ -125,3 +135,11 @@ class TestDatabase:
         db_name = f'ultra_type_{int(time.time())}.db'
         db = Database(db_name, self.fields)
         db.save_stats(stats)
+
+    def test_load(self):
+        db_name = f'ultra_type.db'
+        conn = sqlite3.connect(db_name)
+        c = conn.cursor()
+        c.execute("SELECT * FROM stats")
+        stats = c.fetchall()
+        conn.close()
