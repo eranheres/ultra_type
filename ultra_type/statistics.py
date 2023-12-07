@@ -85,7 +85,7 @@ class Statistics:
         df['input_time'] = pd.to_datetime(df['input_time'])
 
         # Calculate WPM for each entry (assuming 5 characters per word)
-        df['wpm'] = 1 / (df['time'] * 5) / 60
+        df['wpm'] = 1 / ((df['time'] / 60) * 5)
 
         # Calculate error rate for each entry
         df['errors'] = df.apply(lambda x: sum(a != b for a, b in zip(x['user_input'], x['char'])), axis=1)
@@ -99,8 +99,8 @@ class Statistics:
         }).rename(columns={'char': 'count'}).reset_index()
 
         # Rename columns for clarity
-        word_stats.columns = ['char', 'average_wpm', 'avg_error_rate', 'count']
-        sorted_word_stats = word_stats.sort_values(by=['avg_error_rate','average_wpm'], ascending=[False,True])
+        word_stats.columns = ['char', 'wpm', 'error_rate', 'count']
+        sorted_word_stats = word_stats.sort_values(by=['error_rate','wpm'], ascending=[False,True])
         return sorted_word_stats.to_dict('records')
 
     def prtactices_data(self):

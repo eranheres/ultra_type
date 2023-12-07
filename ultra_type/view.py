@@ -35,7 +35,8 @@ class View:
                 pass
 
     def get_main_menu_selection(self, language: str, practice: str):
-        header = f"Main Menu     (Language:{language}, Practice:{practice}, dimensions:{self.screen_width}x{self.screen_height})"
+        header = f"Main Menu     (Language:{language}, Practice:{practice}, "\
+                 "dimensions:{self.screen_width}x{self.screen_height})"
         return self._display_menu(header=header, options=[
             "Practice",
             "Show Stats",
@@ -89,11 +90,11 @@ class View:
                 page_num += 1
 
     def show_letters_stats(self, char_times: {}):
-        str = "Average Time per Character:\n"
+        header = "Average Time per Character:\n"
         for char, info in char_times.items():
             average = info['total'] / info['count']
-            str += f"Character '{char}': {average} sec\n"
-        self.display_full_screen_text(str)
+            header += f"Character '{char}': {average} sec\n"
+        self.display_full_screen_text(header)
 
     def get_practice_selection(self, practices: []):
         return self._display_menu(
