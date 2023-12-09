@@ -20,8 +20,7 @@
 - [x] Show settings in the view
 - [x] Database to load only relevant languages data
 - [x] Center the text and the practice in the view
+- [x] Add sound effects
 - [ ] Fix bug with enter key
 - [ ] Show screen rectangle in the view
 - [ ] Don't count timing on a new page
-- [ ] Add sound effects
-- [?] Database to save practices list on a seperate table

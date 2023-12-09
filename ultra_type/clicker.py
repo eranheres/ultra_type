@@ -1,4 +1,5 @@
 import pygame
+import random
 
 class Clicker:
 
@@ -10,7 +11,7 @@ class Clicker:
 
     def click(self):
         try:
-            # Play the click sound
+            self._click_sound.set_volume(random.random() * 0.5 + 0.5)
             self._click_sound.play()
         except Exception as e:
             print(f"Error playing sound: {e}")

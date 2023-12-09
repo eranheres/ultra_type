@@ -36,7 +36,7 @@ class View:
 
     def get_main_menu_selection(self, language: str, practice: str):
         header = f"Main Menu     (Language:{language}, Practice:{practice}, "\
-                 "dimensions:{self.screen_width}x{self.screen_height})"
+                 f"dimensions:{self.screen_width}x{self.screen_height})"
         return self._display_menu(header=header, options=[
             "Practice",
             "Show Stats",

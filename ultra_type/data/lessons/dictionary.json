@@ -14,6 +14,11 @@
       "language": "Hebrew",
       "title": "Margaret Thatcher",
       "filename": "margaret.txt"
+    },
+    {
+      "language": "English",
+      "title": "Peterson-1",
+      "filename": "peterson-pro-hamas-protests.txt"
     }
   ]
 }

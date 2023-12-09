@@ -7,7 +7,7 @@ class ViewPractice:
         self._stdscr = stdscr
         self._is_ltr = is_ltr
         self._current_page = -1
-        self._clicker = Clicker()
+        self.clicker = Clicker()
 
     def set_practice_text(self, practice_text: str):
         self._practice_text = practice_text
@@ -44,7 +44,6 @@ class ViewPractice:
     def get_user_key(self, pos: int) -> str:
         x, y = self._get_x_y_of_practice(pos)
         self._stdscr.move(y, x)
-        self._clicker.click()
         return self._stdscr.getkey()
 
     def _paginate_text(self, text: str, max_height: int):

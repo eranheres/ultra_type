@@ -90,6 +90,7 @@ class PracticeController:
                     self._err_cnt += 1
                 prev_had_error = True
                 continue
+            self._view.clicker.click()
             started = True
             prev_had_error = False
             self._view.display_typed_char(mapped_char, self._pos)
