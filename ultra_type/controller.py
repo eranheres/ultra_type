@@ -24,12 +24,13 @@ class Controller:
             elif action == '2':
                 self._stats_menu()
             elif action == '3':
-                self._change_lang()
-            elif action == '4':
-                self._change_practice()
-            elif action == '5':
                 self._settings_menu()
-            elif action == '6':
+            elif action == '4':
+                self.model.save_setting()
+                self.model.save_stats()
+            elif action == '5':
+                self.model.save_setting()
+                self.model.save_stats()
                 exit(0)
 
     def _stats_menu(self):

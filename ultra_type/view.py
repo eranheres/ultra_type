@@ -41,7 +41,6 @@ class View:
         return self._display_menu(header=header, options=[
             "Practice",
             "Show Stats",
-            "Change Language",
             "Settings",
             "Save settings"])
 
