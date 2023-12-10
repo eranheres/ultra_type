@@ -28,11 +28,8 @@ class Controller:
             elif action == '4':
                 self._change_practice()
             elif action == '5':
-                self.model.save_stats()
-                self.model.save_setting()
+                self._settings_menu()
             elif action == '6':
-                self.model.save_stats()
-                self.model.save_setting()
                 exit(0)
 
     def _stats_menu(self):
@@ -80,8 +77,22 @@ class Controller:
             self.model.language = Hebrew()
 
 # run if main
+    def _settings_menu(self):
+        action = self.view.get_settings_menu_selection()
+        if action == '1':
+            self._change_lang()
+        elif action == '2':
+            self._change_practice()
+
 if __name__ == '__main__':
     model = Model()
     view = View()
     controller = Controller(model, view)
-    controller.practice()
+    controller.run()
+
+    def _settings_menu(self):
+        action = self.view.get_settings_menu_selection()
+        if action == '1':
+            self._change_lang()
+        elif action == '2':
+            self._change_practice()
