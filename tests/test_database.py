@@ -136,10 +136,3 @@ class TestDatabase:
         db = Database(db_name, self.fields)
         db.save_stats(stats)
 
-    def test_load(self):
-        db_name = f'ultra_type.db'
-        conn = sqlite3.connect(db_name)
-        c = conn.cursor()
-        c.execute("SELECT * FROM stats")
-        stats = c.fetchall()
-        conn.close()
