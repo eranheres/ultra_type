@@ -10,6 +10,7 @@ class View:
 
         curses.noecho()
         curses.cbreak()
+        curses.curs_set(0)
 
     def __del__(self):
         curses.endwin()

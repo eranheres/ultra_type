@@ -18,7 +18,7 @@ class Controller:
                 view_practice = ViewPractice(
                     self.view.stdscr,
                     self.view.screen_width-40,
-                    self.view.screen_height-20,
+                    self.view.screen_height-4,
                     self.model.language.is_ltr())
                 PracticeController(self.model, view_practice).run()
             elif action == '2':

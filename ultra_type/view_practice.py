@@ -1,4 +1,6 @@
 from ultra_type.clicker import Clicker
+import curses
+
 class ViewPractice:
 
     def __init__(self, stdscr, win_width: int, win_height: int, is_ltr: bool):
@@ -14,9 +16,9 @@ class ViewPractice:
         self._pages = self._paginate_text(practice_text, int(self._max_height/2))
 
     def _get_pos_of_practice(self, pos: int) -> (int, int, int):
-        line_cnt = 0
         page_cnt = 0
         for page in self._pages:
+            line_cnt = 0
             for line in page:
                 if pos < len(line):
                     return page_cnt, line_cnt, pos
@@ -44,6 +46,7 @@ class ViewPractice:
     def get_user_key(self, pos: int) -> str:
         x, y = self._get_x_y_of_practice(pos)
         self._stdscr.move(y, x)
+        self._stdscr.addstr(" ", curses.A_REVERSE)
         return self._stdscr.getkey()
 
     def _paginate_text(self, text: str, max_height: int):
@@ -96,16 +99,24 @@ class ViewPractice:
         self._stdscr.addstr(text)
         self._stdscr.refresh()
 
-    def show_rt_practice_stats(self, current_word: str, word_cnt: int, wpm: int, accuracy: int, pos: int, last_char, errors):
-        x = self._max_width + 5
-        self._display_str_at(0, x, f"Word count: {word_cnt}\n")
-        self._display_str_at(1, x, f"WPM: {wpm}\n")
-        self._display_str_at(2, x, f"Accuracy: {accuracy}%\n")
-        self._display_str_at(3, x, f"-----------------\n")
-        self._display_str_at(4, x, f"Pos: {pos}\n")
-        self._display_str_at(5, x, f"Page: {self._current_page}\n")
-        self._display_str_at(6, x, f"Expected: {self._practice_text[pos]}\n")
-        self._display_str_at(7, x, f"Last Typed: {last_char}\n")
-        self._display_str_at(8, x, f"Errors: {errors}\n")
-        self._display_str_at(0, x, f"Current word: {current_word}\n")
+    def _display_block(self, y : int, x: int, text: str):
+        for line in text.split("\n"):
+            self._display_str_at(y, x, line)
+            y += 1
         self._stdscr.refresh()
+
+    def show_rt_practice_stats(self, current_word: str, word_cnt: int, wpm: int, accuracy: int, pos: int, last_char, errors, progress):
+        x = self._max_width + 5
+        text = f"""
+        Progress: {progress}%
+        WPM: --- 
+        Accuracy: {accuracy}%
+        Word count: {word_cnt}
+        -----------------
+        Pos: {pos}
+        Page: {self._current_page}
+        Expected: {self._practice_text[pos]}
+        Last Typed: {last_char}
+        Errors: {errors}
+        Current word: {current_word}"""
+        self._display_block(0, x, text)

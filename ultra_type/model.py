@@ -31,7 +31,7 @@ class Model:
     def practice(self, practice):
         self._practice = practice
 
-    def update_stats(self, practice_name: str, practice_guid: str, word: str, char: str, user_input: str, time: float):
+    def update_stats(self, practice_name: str, practice_guid: str, word: str, char: str, user_input: str, time: float, position: int):
         # generate guid
         self._statistics.update({
             "input_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -43,6 +43,7 @@ class Model:
             "user_input": user_input,
             "time": time,
         })
+        self._practice.attributes["last_position"] = position
 
     def save_stats(self):
         self.database.save_stats(self.statistics.get_stats())

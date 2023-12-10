@@ -16,7 +16,7 @@ class PracticeController:
 
     def run(self):
         practice = self._model.practice
-        self.practice_str = practice.generate_practice(self._model)
+        self.practice_str, self._pos = practice.generate_practice(self._model)
         self._view.set_practice_text(self.practice_str)
         self._practice_session(self.practice_str)
 
@@ -58,15 +58,18 @@ class PracticeController:
             accuracy=(100 - int(self._err_cnt / (self._pos + 1) * 100)),
             pos=self._pos,
             last_char=last_char,
-            errors=self._err_cnt
+            errors=self._err_cnt,
+            progress=int(self._pos / len(self.practice_str) * 100)
         )
 
     def _practice_session(self, practice_str: str):
         practice_guid = str(uuid.uuid4())
         started = False
         prev_had_error = False
+        mapped_char = ""
         while True:
             self._view.refresh_display(self._pos)
+            self._show_stats(mapped_char)
             start = time.perf_counter()
             user_input = self._view.get_user_key(self._pos)
             if user_input == '\x1b':
@@ -75,7 +78,6 @@ class PracticeController:
             mapped_char = self._model.language.map_keyboard_layout(user_input)
             if mapped_char == None:
                 mapped_char = user_input
-            self._show_stats(mapped_char)
             if started:
                 current_word, _ = self._get_current_word(self._pos)
                 self._model.update_stats(
@@ -84,7 +86,8 @@ class PracticeController:
                     word=current_word,
                     char=practice_str[self._pos],
                     user_input=mapped_char,
-                    time=char_time)
+                    time=char_time,
+                    position=self._pos)
             if str(mapped_char) != str(practice_str[self._pos]):
                 if not prev_had_error:
                     self._err_cnt += 1
