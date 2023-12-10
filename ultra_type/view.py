@@ -42,8 +42,14 @@ class View:
             "Practice",
             "Show Stats",
             "Change Language",
-            "Change practice",
+            "Settings",
             "Save settings"])
+
+    def get_settings_menu_selection(self):
+        header = "Settings Menu"
+        return self._display_menu(header=header, options=[
+            "Change language",
+            "Change practice"])
 
     def show_language_menu(self):
         return self._display_menu(header="Choose language:", options=[
