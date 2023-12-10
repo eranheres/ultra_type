@@ -1,6 +1,7 @@
 from ultra_type.database import Database
 from ultra_type.languages.language import Language
 from ultra_type.statistics import Statistics
+from ultra_type.clicker import Clicker
 import datetime
 import importlib
 
@@ -8,6 +9,8 @@ class Model:
 
     def __init__(self):
         self.database = Database(db_name="ultra_type.db", stats_fields=Statistics.FIELD_STRACTURE)
+        self.clicker = Clicker()
+        self.click_sound_enabled = self.clicker.sound_enabled
         self.load_setting()
 
     @property
@@ -23,9 +26,21 @@ class Model:
         self._language = lang
         self._statistics = Statistics(self.database.load_stats(self.language.name))
 
+    def toggle_click_sound(self):
+        self.clicker.toggle_sound()
+        self.click_sound_enabled = self.clicker.sound_enabled
+
     @property
     def practice(self):
         return self._practice
+
+    @property
+    def click_sound_enabled(self):
+        return self._click_sound_enabled
+
+    @click_sound_enabled.setter
+    def click_sound_enabled(self, value: bool):
+        self._click_sound_enabled = value
 
     @practice.setter
     def practice(self, practice):
@@ -55,6 +70,7 @@ class Model:
             "practice": self.practice.__class__.__name__,
             "practice_attributes": attr
         }
+        settings['click_sound_enabled'] = self.click_sound_enabled
         self.database.save_settings(settings)
 
     def load_setting(self):
@@ -67,5 +83,6 @@ class Model:
         self.language = getattr(module, settings["language"])()
         module = importlib.import_module("ultra_type.practices.practice")
         self.practice = getattr(module, settings["practice"])()
+        self.click_sound_enabled = settings.get('click_sound_enabled', True)
         if "practice_attributes" in settings:
             self.practice.attributes = settings["practice_attributes"]
