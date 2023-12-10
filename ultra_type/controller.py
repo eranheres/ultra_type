@@ -84,6 +84,8 @@ class Controller:
             self._change_lang()
         elif action == '2':
             self._change_practice()
+        elif action == '3':
+            self.model.toggle_click_sound()
 
 if __name__ == '__main__':
     model = Model()
