@@ -36,17 +36,6 @@ class PracticeController:
 
         return None
 
-
-
-        current_word = ""
-        word_count = 0
-        for i in range(0, len(self.practice_str)):
-            if self.practice_str[i] in panctuations:
-                word_count += 1
-                break
-            current_word += self.practice_str[i]
-        return current_word,
-
     def _show_stats(self, last_char):
         practice_time = time.perf_counter() - self._start_practice
 
