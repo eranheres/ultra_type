@@ -5,6 +5,7 @@ import random
 class Clicker:
 
     def __init__(self):
+        self.sound_enabled = True # Store state of the click sound
         # Initialize Pygame Mixer
         try:
             pygame.mixer.init()
@@ -18,7 +19,11 @@ class Clicker:
             return
         try:
             self._click_sound.set_volume(random.random() * 0.5 + 0.5)
-            #self._click_sound.play()
+            if self.sound_enabled: # Check if sound is enabled before playing
+                self._click_sound.play()
         except Exception as e:
             print(f"Error playing sound: {e}")
+
+    def toggle_sound(self):
+        self.sound_enabled = not self.sound_enabled # Toggle the state of the click sound
 
