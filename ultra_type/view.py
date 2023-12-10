@@ -48,7 +48,8 @@ class View:
         header = "Settings Menu"
         return self._display_menu(header=header, options=[
             "Change language",
-            "Change practice"])
+            "Change practice",
+            "Toggle click sound"])
 
     def show_language_menu(self):
         return self._display_menu(header="Choose language:", options=[
