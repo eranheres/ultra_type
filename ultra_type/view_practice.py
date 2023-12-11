@@ -3,13 +3,13 @@ import curses
 
 class ViewPractice:
 
-    def __init__(self, stdscr, win_width: int, win_height: int, is_ltr: bool):
+    def __init__(self, stdscr, win_width: int, win_height: int, is_ltr: bool, sound_enabled: bool):
         self._max_width = win_width
         self._max_height = win_height
         self._stdscr = stdscr
         self._is_ltr = is_ltr
         self._current_page = -1
-        self.clicker = Clicker()
+        self.clicker = Clicker(sound_enabled)
 
     def set_practice_text(self, practice_text: str):
         self._practice_text = practice_text

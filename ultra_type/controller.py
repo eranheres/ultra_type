@@ -19,7 +19,8 @@ class Controller:
                     self.view.stdscr,
                     self.view.screen_width-40,
                     self.view.screen_height-4,
-                    self.model.language.is_ltr())
+                    self.model.language.is_ltr(),
+                    self.model.click_sound_enabled)
                 PracticeController(self.model, view_practice).run()
             elif action == '2':
                 self._stats_menu()

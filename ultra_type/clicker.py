@@ -4,8 +4,8 @@ import random
 
 class Clicker:
 
-    def __init__(self):
-        self.sound_enabled = True # Store state of the click sound
+    def __init__(self, sound_enabled=True):
+        self.sound_enabled = sound_enabled# Store state of the click sound
         # Initialize Pygame Mixer
         try:
             pygame.mixer.init()
