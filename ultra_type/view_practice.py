@@ -4,12 +4,17 @@ import curses
 class ViewPractice:
 
     def __init__(self, stdscr, win_width: int, win_height: int, is_ltr: bool, sound_enabled: bool):
-        self._max_width = win_width
-        self._max_height = win_height
-        self._stdscr = stdscr
-        self._is_ltr = is_ltr
-        self._current_page = -1
-        self.clicker = Clicker(sound_enabled)
+            self._max_width = win_width
+            self._max_height = win_height
+            self._stdscr = stdscr
+            self._is_ltr = is_ltr
+            self._current_page = -1
+            self.clicker = Clicker(sound_enabled)
+            curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_WHITE)
+            self._practice_win = curses.newwin(self._max_height, self._max_width, 0, 0)
+            self._practice_win.box(0, 0)
+            self._practice_win.bkgd(' ', curses.color_pair(1))
+            self._practice_win.refresh()
 
     def set_practice_text(self, practice_text: str):
         self._practice_text = practice_text
@@ -35,7 +40,7 @@ class ViewPractice:
         else:
             x = col
         return x, y
-
+        return x, y
     def display_typed_char(self, char: str, pos: int):
         x, y = self._get_x_y_of_practice(pos)
         self._stdscr.move(y, x)
