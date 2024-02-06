@@ -23,6 +23,10 @@ class Stats(Static):
     errors = reactive(0)
     progress = reactive(0)
     current_key = reactive("")
+    line = reactive(0)
+    line_start_pos = reactive(0)
+    line_end_pos = reactive(0)
+    cursor_pos = reactive(0)
 
     def compose(self) -> ComposeResult:
         yield Label(id="stats_label")
@@ -37,6 +41,10 @@ class Stats(Static):
         str += f"Err : {self.errors}\n"
         str += f"Prog: {self.progress}%\n"
         str += f"Key : {self.current_key}\n"
+        str += f"Line: {self.line}\n"
+        str += f"LnSt: {self.line_start_pos}\n"
+        str += f"LnEn: {self.line_end_pos}\n"
+        str += f"CPos: {self.cursor_pos}\n"
         return str
 
 class PauseScreen(ModalScreen):
@@ -90,7 +98,7 @@ class ViewMain(App):
 
     def load_practice(self):
         text, pos = self.controller.model.practice.generate_practice(self.controller.model)
-        self.plain_text = self.paginate_text(text)
+        self._viewed_plain_text = self._viewed_text(text)
         self.controller.reset_practice(text, pos)
         self.action_new()
 
@@ -136,40 +144,45 @@ class ViewMain(App):
 
     def update_statss(self):
         ctrl = self.controller
+        line_start_pos, line_end_pos, line_number = self._get_line_coordinations(ctrl.current_pos)
         word, word_count = ctrl.get_current_word()
         stats = self.query_one("#stats")
-        stats.pos = self.controller.current_pos
+        stats.pos = ctrl.current_pos
         stats.word = word
         stats.word_count = word_count
         if ctrl.practice_time:
             stats.wpm = int((ctrl.current_pos-ctrl.start_pos) / 5 / (ctrl.practice_time / 60))
         stats.accuracy = (100 - int(ctrl.error_count / (ctrl.current_pos + 1) * 100))
         stats.errors = ctrl.error_count
-        stats.progress = int(ctrl.current_pos / len(self.plain_text) * 100)
+        stats.progress = int(ctrl.current_pos / len(ctrl.text) * 100)
         stats.current_key = ctrl.get_current_key()
+        stats.line = line_number
+        stats.line_start_pos = line_start_pos
+        stats.line_end_pos = line_end_pos
+        stats.cursor_pos = line_start_pos + (line_end_pos - ctrl.current_pos)
 
     def update_label(self):
-        if not self.plain_text:
+        if not self._viewed_plain_text:
             return
         current_pos = self.controller.current_pos
-        line_start_pos, line_end_pos = self._get_line_coordinations(current_pos)
-        rich_text = Text(self.plain_text)
+        rich_text = Text(self._viewed_plain_text)
         color = "blue"
         if self.controller.model.language.is_ltr():
             rich_text.stylize(color, 0, current_pos)
             rich_text.stylize("underline ", current_pos , current_pos + 1)
         else:
-            rich_text.stylize(color, 0, line_start_pos)
-            curser_pos = line_start_pos + (line_end_pos - current_pos)
-            rich_text.stylize(color, curser_pos, line_end_pos)
-            rich_text.stylize("underline ", curser_pos - 1, line_end_pos - current_pos)
+            line_start_pos, line_end_pos, line_number = self._get_line_coordinations(current_pos)
+            rich_text.stylize(color, 0, line_start_pos + line_number)
+            curser_pos = line_start_pos + (line_end_pos - current_pos) + line_number
+            rich_text.stylize(color, curser_pos, line_end_pos + line_number)
+            rich_text.stylize("underline ", curser_pos - 1, curser_pos)
         l = self.query_one("#text")
         # label.text_style.stylize("red", 0, pos)
         l.update(rich_text)
         self.render()
 
     def on_key(self, event: events.Key) -> None:
-        if self.plain_text is None:
+        if self._viewed_plain_text is None:
             return
         if event.key in self.controls:
             return
@@ -178,39 +191,36 @@ class ViewMain(App):
         self.update_label()
         self.update_statss()
 
-    def _get_line_coordinations(self, pos: int) -> (int, int):
-        s = self.plain_text
-        bindex = s[:pos + 1].rfind("\n")
-        if bindex == -1:
-            bindex = 0
-        eindex = s[pos:].find("\n")
-        if eindex == -1:
-            eindex = len(s)
-        else:
-            eindex += pos
-        return bindex, eindex
+    def _get_line_coordinations(self, pos: int) -> (int, int, int):
+        lines = self._viewed_plain_text.split("\n")
+        line_start_pos = 0
+        line_end_pos = 0
+        line_number = 0
+        for line in lines:
+            line_end_pos += len(line)
+            if line_end_pos > pos:
+                break
+            line_start_pos = line_end_pos
+            line_number += 1
+        return line_start_pos, line_end_pos, line_number
 
-    def paginate_text(self, text) -> str:
+    def _viewed_text(self, text) -> str:
         if self.controller.model.language.is_ltr():
             return text
         label = self.query_one("#text")
-        width = label.container_size.width - 2
+        width = label.container_size.width
         words = text.split()
         lines = []
         current_line = ""
 
         for word in words:
+            # if the word is too long to fit in the line
             if len(current_line) + len(word) + 1 > width:
-                current_line += " "
                 lines.append(current_line[::-1])
-                current_line = word
-            else:
-                if current_line:  # Add a space if it's not the first word in the line
-                    current_line += " "
-                current_line += word
+                current_line = ""
+            current_line += word + " "
 
-        # Add the last words and lines if not empty
-        if current_line:
-            lines.append(current_line[::-1])
+        current_line = current_line[:-1]  # remove the last space
+        lines.append(current_line[::-1])
         return "\n".join(lines)
 

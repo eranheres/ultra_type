@@ -36,6 +36,10 @@ class Controller:
         return self._error_count
 
     @property
+    def text(self):
+        return self._text
+
+    @property
     def languages(self) -> list:
         return self.model.languages
 

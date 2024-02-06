@@ -25,5 +25,5 @@
 - [x] Make menu to select options
 - [x] Connect model to controller
 - [x] Add stats of timing
-- [ ] Fix the hebrew new line bug
+- [x] Fix the hebrew new line bug
 - [ ] Fix the problem when practice ends
