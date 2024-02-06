@@ -161,3 +161,4 @@ cython_debug/
 typing_practice.db
 *.db
 **/settings.json
+.DS_Store
