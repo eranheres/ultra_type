@@ -42,7 +42,8 @@ class Statistics:
         df = pd.merge(df_errors, df_wpm, on='word')
         df.columns = ['word', 'count', 'error_count', 'error_rate', 'wpm']
         sorted_word_stats = df.sort_values(by=['wpm', 'error_rate'], ascending=[True, False])
-        return sorted_word_stats.to_dict('records')
+
+        return list(df.columns), sorted_word_stats.values.tolist()
 
     def word_data_old(self):
         if len(self.stats) == 0:
@@ -101,9 +102,9 @@ class Statistics:
         # Rename columns for clarity
         word_stats.columns = ['char', 'wpm', 'error_rate', 'count']
         sorted_word_stats = word_stats.sort_values(by=['error_rate','wpm'], ascending=[False,True])
-        return sorted_word_stats.to_dict('records')
+        return word_stats.columns, sorted_word_stats.values.tolist()
 
-    def prtactices_data(self):
+    def practices_data(self):
         if len(self.stats) == 0:
             return {"records": []}
         df = pd.DataFrame(self.stats)
@@ -132,8 +133,8 @@ class Statistics:
         result['wpm'] = result['char_count'] / (result['duration'] * 5)  # Assuming 5 characters per word
         result['accuracy'] = result['correct_chars'] / result['char_count'] * 100
 
-        return result[['start_time', 'char_count', 'wpm', 'accuracy']].\
-                            sort_values(by='start_time', ascending=False).to_dict('records')
+        columns = ['start_time', 'char_count', 'wpm', 'accuracy']
+        return columns,result[columns].sort_values(by='start_time', ascending=False).values.tolist()
 
     def daily_data(self):
         if len(self.stats) == 0:
@@ -143,4 +144,4 @@ class Statistics:
         df['date'] = df['input_time'].apply(lambda x: x[0:10])
         df = df.groupby('date').agg({'time': sum})
         df['time'] = df['time'] / 60
-        return df.sort_values(by='date', ascending=False).to_dict('records')
+        return ['date','time'], df.sort_values(by='date', ascending=False).values.tolist()

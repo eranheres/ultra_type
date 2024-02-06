@@ -1,0 +1,17 @@
+#text {
+    text-align: right;
+    background: lightblue;
+    width: 100%;
+}
+
+#stats {
+    text-align: left;
+    background: lightgreen;
+    width: 100%;
+}
+
+
+Grid {
+    grid-size: 2 1;
+    grid-columns: 10 1fr;
+}

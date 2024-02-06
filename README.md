@@ -21,6 +21,9 @@
 - [x] Database to load only relevant languages data
 - [x] Center the text and the practice in the view
 - [x] Add sound effects
-- [ ] Fix bug with enter key
-- [ ] Show screen rectangle in the view
-- [ ] Don't count timing on a new page
+
+- [x] Make menu to select options
+- [x] Connect model to controller
+- [x] Add stats of timing
+- [ ] Fix the hebrew new line bug
+- [ ] Fix the problem when practice ends

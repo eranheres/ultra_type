@@ -1,56 +1,52 @@
 import json
+import re
 from ultra_type.model import Model
-from ultra_type.view import View
-from ultra_type.languages.language import English, Hebrew
 from ultra_type.practices.practice import PracticeWeakLetters, PracticeRandom, PracticeWeakWords, PracticeLesson
-from ultra_type.practice_controller import PracticeController
-from ultra_type.view_practice import ViewPractice
+from ultra_type.clicker import Clicker
+import time
+import uuid
+
 
 class Controller:
-    def __init__(self, model: Model, view: View):
-        self.model = model
-        self.view = view
+    def __init__(self, model: Model):
+        self._model = model
+        self._current_pos = 0
+        self._text = ""
+        self._timer = None
+        self._practice_guid = str(uuid.uuid4())
+        self._practice_time = None
+        self._error_count = 0
+        self._start_pos = 0
+        self._clicker = Clicker(model.click_sound_enabled)
 
-    def run(self):
-        while (True):
-            action = self.view.get_main_menu_selection(self.model.language.name, self.model.practice.description)
-            if action == '1':
-                view_practice = ViewPractice(
-                    self.view.stdscr,
-                    self.view.screen_width-40,
-                    self.view.screen_height-4,
-                    self.model.language.is_ltr(),
-                    self.model.click_sound_enabled)
-                PracticeController(self.model, view_practice).run()
-            elif action == '2':
-                self._stats_menu()
-            elif action == '3':
-                self._settings_menu()
-            elif action == '4':
-                self.model.save_setting()
-                self.model.save_stats()
-            elif action == '5':
-                self.model.save_setting()
-                self.model.save_stats()
-                exit(0)
+    @property
+    def model(self):
+        return self._model
 
-    def _stats_menu(self):
-        stats = []
-        while True:
-            choice = self.view.show_stats_menu()
-            if choice == '1':
-                stats = self.model.statistics.prtactices_data()
-            elif choice == '2':
-                stats = self.model.statistics.letters_data()
-            elif choice == '3':
-                stats = self.model.statistics.word_data()
-            elif choice == '4':
-                stats = self.model.statistics.daily_data()
-            elif choice == '5':
-                break
-            self.view.show_stats_from_structure(stats)
+    @property
+    def current_pos(self):
+        return self._current_pos
 
-    def _change_practice(self):
+    @property
+    def start_pos(self):
+        return self._start_pos
+
+    @property
+    def error_count(self):
+        return self._error_count
+
+    @property
+    def languages(self) -> list:
+        return self.model.languages
+
+    @property
+    def practice_time(self):
+        if self._practice_time:
+            return time.perf_counter() - self._practice_time
+        return 0
+
+    @property
+    def practices(self) -> list:
         practices = [
             PracticeRandom(),
             PracticeWeakWords(),
@@ -66,37 +62,87 @@ class Controller:
             practice_lesson = PracticeLesson()
             practice_lesson.attributes = lesson
             practices.append(practice_lesson)
-        selection = int(self.view.get_practice_selection(practices))
-        if selection > len(practices):
-            return
-        self.model.practice = practices[selection-1]
+        return practices
 
-    def _change_lang(self):
-        action = self.view.show_language_menu()
-        if action == '1':
-            self.model.language = English()
-        elif action == '2':
-            self.model.language = Hebrew()
+    def reset(self):
+        self._current_pos = 0
+        self._timer = None
+        self._practice_guid = str(uuid.uuid4())
+        self._practice_time = None
+        self._error_count = 0
+        self._start_pos = 0
+
+    def pause(self):
+        self._timer = None
+        self._practice_time = None
+
+    def reset_practice(self, text, pos):
+        self._practice_guid = str(uuid.uuid4())
+        self._practice_time = time.perf_counter()
+        self._text = text
+        self._current_pos = pos
+        self._start_pos = pos
+        self._error_count = 0
+
+    def language_idx(self, lang: str = None) -> int:
+        if lang is None:
+            lang = self.model.language.name
+        return next(i for i, obj in enumerate(self.model.languages) if obj.name == lang)
+
+    def practice_idx(self, desc: str = None) -> int:
+        if desc is None:
+            desc = self.model.practice.description
+        return next(i for i, obj in enumerate(self.practices) if obj.description == desc)
+
+    def get_current_word(self):
+        pattern = r'\w+|[^\w\s]|\s'
+
+        # Find all matches in the text
+        words = re.findall(pattern, self._text)
+
+        current_pos = 0
+        word_count = 0
+        for string in words:
+            if current_pos + len(string) > self._current_pos:
+                return string, word_count
+            current_pos += len(string)
+            word_count += 1
+
+        return None
+
+    def _update_stats(self, mapped_char, timing):
+        current_word, _ = self.get_current_word()
+        self.model.update_stats(
+            practice_name=self.model.practice.__class__.__name__,
+            practice_guid=self._practice_guid,
+            word=current_word,
+            char=self._text[self._current_pos],
+            user_input=mapped_char,
+            time=timing,
+            position=self._current_pos)
+
+    def sound_enabled(self, value: bool):
+        self._clicker.sound_enabled = value
+        self.model.click_sound_enabled = value
+
+    def get_current_key(self):
+        return self._text[self._current_pos]
+
+    def on_key(self, key_char) -> int:
+        self._clicker.click()
+        mapped_char = self.model.language.map_keyboard_layout(key_char)
+        delta_time = None
+        if self._timer:
+            delta_time = time.perf_counter() - self._timer
+        else:
+            self._practice_time = time.perf_counter()
+        self._timer = time.perf_counter()
+        if mapped_char == str(self._text[self._current_pos]):
+            self._current_pos += 1
+        else:
+            self._error_count += 1
+        if delta_time:
+            self._update_stats(mapped_char, delta_time)
+        return self._current_pos
 
 # run if main
-    def _settings_menu(self):
-        action = self.view.get_settings_menu_selection()
-        if action == '1':
-            self._change_lang()
-        elif action == '2':
-            self._change_practice()
-        elif action == '3':
-            self.model.toggle_click_sound()
-
-if __name__ == '__main__':
-    model = Model()
-    view = View()
-    controller = Controller(model, view)
-    controller.run()
-
-    def _settings_menu(self):
-        action = self.view.get_settings_menu_selection()
-        if action == '1':
-            self._change_lang()
-        elif action == '2':
-            self._change_practice()

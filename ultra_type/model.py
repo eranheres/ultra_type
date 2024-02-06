@@ -1,14 +1,21 @@
 from ultra_type.database import Database
-from ultra_type.languages.language import Language
 from ultra_type.statistics import Statistics
 from ultra_type.clicker import Clicker
+from ultra_type.languages.language import *
+
+import json
 import datetime
 import importlib
+
 
 class Model:
 
     def __init__(self):
         self.database = Database(db_name="ultra_type.db", stats_fields=Statistics.FIELD_STRACTURE)
+        self._language = None
+        self._statistics = None
+        self._practice = None
+
         self.clicker = Clicker()
         self.click_sound_enabled = self.clicker.sound_enabled
         self.load_setting()
@@ -46,7 +53,16 @@ class Model:
     def practice(self, practice):
         self._practice = practice
 
-    def update_stats(self, practice_name: str, practice_guid: str, word: str, char: str, user_input: str, time: float, position: int):
+    @property
+    def languages(self) -> list:
+        return [
+            English(),
+            Hebrew()
+        ]
+
+
+    def update_stats(self, practice_name: str, practice_guid: str, word: str, char: str, user_input: str, time: float,
+                     position: int):
         # generate guid
         self._statistics.update({
             "input_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -65,12 +81,10 @@ class Model:
 
     def save_setting(self):
         attr = {} if hasattr(self.practice, "attributes") is False else self.practice.attributes
-        settings = {
-            "language": self.language.__class__.__name__,
-            "practice": self.practice.__class__.__name__,
-            "practice_attributes": attr
-        }
-        settings['click_sound_enabled'] = self.click_sound_enabled
+        settings = {"language": self.language.__class__.__name__,
+                    "practice": self.practice.__class__.__name__,
+                    "practice_attributes": attr,
+                    'click_sound_enabled': self.click_sound_enabled}
         self.database.save_settings(settings)
 
     def load_setting(self):

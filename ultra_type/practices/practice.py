@@ -43,7 +43,7 @@ class PracticeRandom(Practice):
         words = data['words']
         random.shuffle(words)
         rand_words = words[:50]
-        return ' '.join(rand_words)
+        return ' '.join(rand_words), 0
 
 
 class PracticeLesson(Practice):

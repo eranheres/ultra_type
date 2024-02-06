@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/eranheres/projects/gpt/projects/ultra_type/ultra_type/main.py", line 13, in <module>
+    main()
+  File "/Users/eranheres/projects/gpt/projects/ultra_type/ultra_type/main.py", line 10, in main
+    controller.run()
+  File "/Users/eranheres/projects/gpt/projects/ultra_type/ultra_type/controller.py", line 28, in run
+    self._settings_menu()
+  File "/Users/eranheres/projects/gpt/projects/ultra_type/ultra_type/controller.py", line 87, in _settings_menu
+    self._change_practice()
+  File "/Users/eranheres/projects/gpt/projects/ultra_type/ultra_type/controller.py", line 60, in _change_practice
+    with open('ultra_type/data/lessons/dictionary.json') as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'ultra_type/data/lessons/dictionary.json'

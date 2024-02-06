@@ -1,0 +1,11 @@
+#stats_list {
+    height: 100%;
+    width: 23;
+    border: solid green;
+}
+
+#data_table {
+    height: 100%;
+    width: 1fr;
+    border: solid green;
+}

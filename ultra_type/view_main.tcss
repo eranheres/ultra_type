@@ -1,0 +1,34 @@
+#text {
+    text-align: right;
+    background: gray;
+    width: 100%;
+    margin: 1;
+    border: white round;
+}
+
+#stats {
+    border: white round;
+    text-align: left;
+    background: green;
+    width: 100%;
+    height: 100%;
+    margin: 1;
+}
+
+
+Grid {
+    grid-size: 2 1;
+    grid-columns: 15 1fr;
+}
+
+PauseScreen {
+    align: center middle;
+}
+
+#paused {
+    text-align: center;
+    padding: 0 1;
+    width: 32;
+    height: 5;
+    border: thick;
+}
